@@ -16,25 +16,27 @@
     --paper:#faf6ee;--card:#fffdf8;--ink:#26241f;--muted:#7c766a;--line:rgba(38,36,31,.14);
     --accent:#c2562f;--accent-soft:#f6e4dc;
     --unseen:#bdb8ac;--new:#c0573a;--heard:#c8952a;--known:#4a8a5c;
+    --bk-bg:#e7efe4;--bk-fg:#3c6c49;--hd-bg:#f4ead3;--hd-fg:#846017;--nk-bg:#f4e3db;--nk-fg:#9a472b;
     --safe-top:env(safe-area-inset-top);--safe-bot:env(safe-area-inset-bottom);
   }
   @media (prefers-color-scheme:dark){
     :root{--paper:#15140f;--card:#211f19;--ink:#f0ebe0;--muted:#a39c8c;--line:rgba(240,235,224,.16);
-      --accent:#e0925c;--accent-soft:#3a221c;--unseen:#5f5a4e;}
+      --accent:#e0925c;--accent-soft:#3a221c;--unseen:#5f5a4e;
+      --bk-bg:#26352b;--bk-fg:#86bd95;--hd-bg:#352f1f;--hd-fg:#d6b066;--nk-bg:#382520;--nk-fg:#e0967a;}
   }
   *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
   html,body{margin:0;height:100%}
   body{background:var(--paper);color:var(--ink);
     font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;line-height:1.5}
   #app{max-width:560px;margin:0 auto;min-height:100svh;display:flex;flex-direction:column;
-    padding:calc(var(--safe-top) + 10px) 16px calc(var(--safe-bot) + 16px)}
+    padding:calc(var(--safe-top) + 10px) 16px 0}
   .hdr{display:flex;align-items:center;gap:10px;margin:2px 0 14px;min-height:34px}
   .hdr h1{font-family:"Caveat",cursive;font-size:34px;margin:0;flex:1}
   .hdr .sub{font-size:13px;color:var(--muted)}
   .back{background:none;border:none;color:var(--ink);font-size:26px;line-height:1;padding:0 8px 0 0;cursor:pointer}
-  .iconbtn{background:none;border:none;color:var(--muted);font-size:20px;cursor:pointer;padding:6px}
-  .serif{font-family:"Caveat",cursive}
+  .iconbtn{background:none;border:none;color:var(--muted);font-size:14px;cursor:pointer;padding:6px;text-decoration:underline}
 
+  .pad{padding-bottom:calc(var(--safe-bot) + 16px)}
   .stats{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
   .stat{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px 14px}
   .stat b{font-size:24px;display:block;line-height:1.1}
@@ -68,32 +70,35 @@
   .cr-next{font-size:12px;color:var(--muted)}
   .cr-due{color:var(--accent);font-weight:600}
 
-  .legend{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;color:var(--muted);margin:14px 2px 0;justify-content:center}
+  .legend{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;color:var(--muted);margin:14px 2px;justify-content:center}
   .legend span{display:flex;align-items:center;gap:5px}
 
+  /* STUDY */
   .study{flex:1;display:flex;flex-direction:column}
-  .sessbar{font-size:13px;color:var(--muted);text-align:center;margin-bottom:8px}
-  .scard{flex:1;background:var(--card);border:1px solid var(--line);border-radius:20px;
-    padding:26px 22px;display:flex;flex-direction:column;justify-content:center;min-height:320px;cursor:pointer}
+  .scard{background:var(--card);border:1px solid var(--line);border-radius:20px;
+    padding:24px 20px 22px;cursor:pointer;min-height:190px;margin-bottom:6px}
   .scard .center{text-align:center}
   .kanji{font-size:52px;color:var(--accent);line-height:1;margin-bottom:8px}
   .sname{font-family:"Caveat",cursive;font-size:40px;line-height:1;margin-bottom:4px}
   .sdom{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:1px}
   .sstatus{font-size:12px;color:var(--muted);margin-top:10px}
-  .back-rev{margin-top:6px;text-align:left}
+  .back-rev{text-align:left}
   .lbl{font-size:11px;text-transform:uppercase;letter-spacing:.7px;color:var(--accent);font-weight:600;margin:16px 0 3px}
   .back-rev p{margin:0;font-size:16px}
-  .hint{color:var(--muted);font-size:14px;text-align:center;margin-top:16px}
-  .rate{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}
-  .rate button{border:none;border-radius:13px;padding:14px 4px;color:#fff;font-weight:600;font-size:14px;
-    cursor:pointer;font-family:inherit;line-height:1.2}
-  .rate small{display:block;font-weight:400;opacity:.85;font-size:10px;margin-top:2px}
-  .r-known{background:var(--known)}.r-heard{background:var(--heard)}.r-new{background:var(--new)}
-  .toast{text-align:center;font-size:14px;color:var(--ink);background:var(--accent-soft);
-    border-radius:12px;padding:10px;margin-top:12px}
-  .ghost{background:var(--card);border:1px solid var(--line);color:var(--ink);border-radius:13px;
-    padding:13px;font-size:15px;cursor:pointer;font-family:inherit;width:100%;margin-top:10px}
-  .empty{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;text-align:center;color:var(--muted)}
+  .hint{color:var(--muted);font-size:14px;text-align:center;margin-top:18px}
+  /* always-visible, pinned rating bar */
+  .ratebar{position:sticky;bottom:0;z-index:5;display:grid;grid-template-columns:repeat(3,1fr);gap:8px;
+    background:var(--paper);border-top:1px solid var(--line);
+    padding:10px 0 calc(var(--safe-bot) + 8px);margin-top:auto}
+  .ratebar button{border:1px solid transparent;border-radius:13px;padding:13px 4px;font-weight:600;
+    font-size:14px;cursor:pointer;font-family:inherit;line-height:1.2}
+  .ratebar button:active{transform:scale(.97)}
+  .ratebar small{display:block;font-weight:400;opacity:.8;font-size:10px;margin-top:2px}
+  .r-known{background:var(--bk-bg);color:var(--bk-fg)}
+  .r-heard{background:var(--hd-bg);color:var(--hd-fg)}
+  .r-new{background:var(--nk-bg);color:var(--nk-fg)}
+
+  .empty{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;text-align:center;color:var(--muted);padding-bottom:40px}
   .empty .big{font-size:42px}
   .spacer{flex:1}
 </style>
@@ -264,6 +269,7 @@ function home(){
   nav={view:"home"};
   const all=CARDS, known=knownCount(all), due=dueList(all).length;
   let h=`<div class="hdr"><h1>Dōjō</h1><span class="sub">${all.length} cards</span></div>
+  <div class="pad">
   <div class="stats">
     <div class="stat"><b>${known}</b><span>known</span></div>
     <div class="stat"><b>${due}</b><span>due now</span></div>
@@ -287,8 +293,8 @@ function home(){
     <span><i class="dot"></i>new</span><span><i class="dot new"></i>don't know</span>
     <span><i class="dot heard"></i>heard of</span><span><i class="dot known"></i>known</span>
   </div>
-  <div class="spacer"></div>
-  <button class="iconbtn" data-act="reset" style="align-self:center;margin-top:14px">reset progress</button>`;
+  <button class="iconbtn" data-act="reset" style="display:block;margin:6px auto 0">reset progress</button>
+  </div>`;
   render(h);
   $("app").querySelectorAll("[data-dom]").forEach(b=>b.onclick=()=>category(b.dataset.dom));
   bindActs();
@@ -299,6 +305,7 @@ function category(d){
   nav={view:"category",dom:d};
   const list=inDomain(d), k=knownCount(list), du=dueList(list).length, nw=newList(list).length;
   let h=`<div class="hdr"><button class="back" data-act="home">‹</button><h1 style="font-size:28px">${d}</h1></div>
+  <div class="pad">
   <div class="stats">
     <div class="stat"><b>${k}/${list.length}</b><span>known</span></div>
     <div class="stat"><b>${du}</b><span>due now</span></div>
@@ -316,7 +323,7 @@ function category(d){
       <span class="cr-next ${isDue(c.id)?"cr-due":""}">${nextLabel(c.id)}</span>
     </button>`;
   });
-  h+=`</div>`;
+  h+=`</div></div>`;
   render(h);
   $("app").querySelectorAll("[data-id]").forEach(b=>b.onclick=()=>startSession([b.dataset.id],{ret:"category",dom:d}));
   bindActs();
@@ -326,7 +333,7 @@ function category(d){
 let sess=null;
 function startSession(ids,opts){
   if(!ids.length)return;
-  sess={ids, i:0, ret:opts.ret, dom:opts.dom, flipped:false, rated:false};
+  sess={ids, i:0, ret:opts.ret, dom:opts.dom, flipped:false};
   nav={view:"study"};
   study();
 }
@@ -340,45 +347,46 @@ function study(){
         <div class="kanji">${c.kanji||""}</div>
         <div class="sname">${c.name}</div>
         <div class="sdom">${c.domain}</div>
-        <div class="sstatus">${seen(c.id)?("you marked: "+labelOf(statusOf(c.id))+" · next "+duePhrase(c.id)):"new card"}</div>
+        <div class="sstatus">${seen(c.id)?("last: "+labelOf(statusOf(c.id))+" · review "+duePhrase(c.id)):"new card"}</div>
       </div>
       <div id="rev" class="back-rev" style="display:none">
         <div class="lbl">What it means</div><p>${esc(c.description)}</p>
         <div class="lbl">In practice</div><p>${esc(c.example)}</p>
         <div class="lbl">Test yourself</div><p>${esc(c.q)}</p>
       </div>
-      <div class="hint" id="hint">tap to reveal</div>
+      <div class="hint" id="hint">tap to reveal · or just rate it</div>
     </div>
-    <div id="rate" class="rate" style="display:none">
+    <div class="ratebar">
       <button class="r-known" data-r="known">Known<small>solid</small></button>
       <button class="r-heard" data-r="heard">Heard of<small>vaguely</small></button>
       <button class="r-new" data-r="new">Don't know<small>teach me</small></button>
     </div>
-    <div id="after"></div>
   </div>`;
   render(h);
   $("scard").onclick=flip;
-  $("app").querySelectorAll("#rate button").forEach(b=>b.onclick=()=>doRate(c,b.dataset.r));
+  $("app").querySelectorAll(".ratebar button").forEach(b=>b.onclick=()=>doRate(c,b.dataset.r));
   bindActs();
 }
 function flip(){
   if(sess.flipped)return;
   sess.flipped=true;
-  $("rev").style.display="block";$("hint").style.display="none";$("rate").style.display="grid";
+  $("rev").style.display="block";$("hint").style.display="none";
 }
 function doRate(c,r){
   rate(c.id,r);
-  const after=$("after");
-  after.innerHTML=`<div class="toast">Marked <b>${labelOf(r)}</b> · review ${duePhrase(c.id)}</div>`;
-  $("rate").style.display="none";
-  if(sess.i < sess.ids.length-1){
-    after.innerHTML+=`<button class="cta" data-act="next">Next card →</button>`;
-  }else{
-    after.innerHTML+=`<button class="cta" data-act="exit">Done ·return</button>`;
-  }
+  if(sess.i < sess.ids.length-1){ sess.i++; sess.flipped=false; study(); return; }
+  const multi=sess.ids.length>1, ret=sess.ret, dom=sess.dom, n=sess.ids.length; sess=null;
+  if(multi) doneScreen(n,ret,dom);
+  else if(ret==="category"&&dom) category(dom);
+  else home();
+}
+function doneScreen(n,ret,dom){
+  nav={view:"done",dom:dom,ret:ret};
+  render(`<div class="hdr"><h1 style="font-size:28px">Nice work</h1></div>
+    <div class="empty"><div class="big">🍵</div><p>You went through ${n} card${n>1?"s":""}.</p>
+    <button class="cta" data-act="${ret==='category'?'backcat':'home'}" style="max-width:240px">Back</button></div>`);
   bindActs();
 }
-function nextCard(){sess.i++;sess.flipped=false;study();}
 function exitSession(){
   const ret=sess?sess.ret:"home", dom=sess?sess.dom:null; sess=null;
   if(ret==="category"&&dom)category(dom);else home();
@@ -393,11 +401,11 @@ function bindActs(){
     const a=b.dataset.act;
     b.onclick=()=>{
       if(a==="home")home();
+      else if(a==="backcat")category(nav.dom);
       else if(a==="reviewall")startSession(dueList(CARDS).map(c=>c.id),{ret:"home"});
       else if(a==="learnall")startSession(newList(CARDS).slice(0,20).map(c=>c.id),{ret:"home"});
       else if(a==="learncat")startSession(newList(inDomain(nav.dom)).map(c=>c.id),{ret:"category",dom:nav.dom});
       else if(a==="reviewcat")startSession(dueList(inDomain(nav.dom)).map(c=>c.id),{ret:"category",dom:nav.dom});
-      else if(a==="next")nextCard();
       else if(a==="exit")exitSession();
       else if(a==="reset"){if(confirm("Reset all your progress?")){prog={};save();home();}}
     };
