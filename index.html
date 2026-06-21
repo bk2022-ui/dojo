@@ -26,36 +26,33 @@
   body{background:var(--paper);color:var(--ink);
     font-family:"Patrick Hand",-apple-system,sans-serif;
     display:flex;flex-direction:column;align-items:center;justify-content:center;
-    min-height:100svh;padding:calc(var(--safe-top) + 32px) 22px calc(var(--safe-bot) + 28px);
+    min-height:100svh;padding:calc(var(--safe-top) + 22px) 20px calc(var(--safe-bot) + 20px);
     text-align:center}
-  .brand{font-family:"Caveat",cursive;font-weight:700;font-size:64px;line-height:1;
-    margin:0 0 6px}
-  .underline{width:210px;max-width:70vw;height:14px;margin:0 auto 14px;display:block;color:var(--ink)}
-  .tag{font-size:21px;color:var(--muted);margin:0 0 40px;max-width:30ch}
-  .cards{display:flex;flex-wrap:wrap;gap:22px;justify-content:center;width:100%;max-width:620px}
-  .card{position:relative;background:var(--card);border:2.5px solid var(--line);
-    border-radius:20px;padding:30px 22px 26px;width:262px;max-width:100%;
-    text-decoration:none;color:inherit;display:flex;flex-direction:column;align-items:center;
-    gap:6px;transition:transform .12s ease, box-shadow .12s ease}
-  .card:nth-child(1){transform:rotate(-1.3deg)}
-  .card:nth-child(2){transform:rotate(1.3deg)}
-  .card.live:hover,.card.live:active{transform:rotate(0) translateY(-3px);
-    box-shadow:6px 8px 0 -2px var(--line)}
-  .icon{width:74px;height:74px;color:var(--ink);margin-bottom:4px}
-  .name{font-family:"Caveat",cursive;font-weight:700;font-size:38px;line-height:1}
-  .desc{font-size:18px;color:var(--muted);line-height:1.3;max-width:22ch}
+  .brand{font-family:"Caveat",cursive;font-weight:700;font-size:52px;line-height:1;margin:0 0 2px}
+  .underline{width:188px;max-width:64vw;height:13px;margin:0 auto 12px;display:block;color:var(--ink)}
+  .tag{font-size:19px;color:var(--muted);margin:0 0 26px;max-width:30ch}
+  .cards{display:flex;flex-direction:column;gap:14px;width:100%;max-width:400px}
+  .card{display:flex;align-items:center;gap:15px;text-align:left;
+    background:var(--card);border:2.5px solid var(--line);border-radius:18px;
+    padding:15px 17px;text-decoration:none;color:inherit;
+    transition:transform .12s ease, box-shadow .12s ease}
+  .card.live:active{transform:translateY(-2px);box-shadow:5px 6px 0 -2px var(--line)}
+  @media (hover:hover){ .card.live:hover{transform:translateY(-2px);box-shadow:5px 6px 0 -2px var(--line)} }
+  .icon{width:46px;height:46px;flex-shrink:0;color:var(--ink)}
+  .ctext{flex:1;min-width:0}
+  .name{font-family:"Caveat",cursive;font-weight:700;font-size:30px;line-height:1.05}
+  .desc{font-size:15px;color:var(--muted);line-height:1.25;margin-top:1px}
+  .end{flex-shrink:0;font-size:20px;color:var(--ink);opacity:.75}
   .card.soon{opacity:.72}
-  .badge{margin-top:10px;font-size:15px;color:var(--soon);
-    border:2px dashed var(--soon);border-radius:999px;padding:3px 14px;transform:rotate(-2deg)}
-  .go{margin-top:10px;font-size:17px;color:var(--ink);opacity:.8}
-  .foot{margin-top:44px;font-size:16px;color:var(--muted)}
-  @media (max-width:560px){ .brand{font-size:54px} .cards{gap:18px} }
+  .badge{flex-shrink:0;font-size:13px;color:var(--soon);
+    border:2px dashed var(--soon);border-radius:999px;padding:3px 11px;transform:rotate(-2deg);white-space:nowrap}
+  .foot{margin-top:30px;font-size:15px;color:var(--muted)}
 </style>
 </head>
 <body>
   <h1 class="brand">Napkin Solo</h1>
-  <svg class="underline" viewBox="0 0 210 14" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" aria-hidden="true">
-    <path d="M4 9 C 45 3, 80 12, 120 6 S 190 4, 206 8"/>
+  <svg class="underline" viewBox="0 0 188 13" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" aria-hidden="true">
+    <path d="M4 8 C 40 3, 72 11, 108 6 S 170 4, 184 7"/>
   </svg>
   <p class="tag">Two little tools for a curious mind. Pick a door.</p>
 
@@ -68,9 +65,11 @@
         <path d="M48 26 L 49 54"/>
         <path d="M16 36 L 48 36"/>
       </svg>
-      <div class="name">Dōjō</div>
-      <div class="desc">Learn anything, one card at a time</div>
-      <div class="go">enter →</div>
+      <div class="ctext">
+        <div class="name">Dōjō</div>
+        <div class="desc">Learn anything, one card at a time</div>
+      </div>
+      <div class="end">→</div>
     </a>
 
     <div class="card soon" aria-disabled="true">
@@ -79,8 +78,10 @@
         <path d="M22 24 L 42 24 M22 32 L 38 32"/>
         <path d="M40 44 L 54 30 L 58 34 L 44 48 Z"/>
       </svg>
-      <div class="name">Napkin Solo</div>
-      <div class="desc">Explain any idea in one sketch</div>
+      <div class="ctext">
+        <div class="name">Napkin Solo</div>
+        <div class="desc">Explain any idea in one sketch</div>
+      </div>
       <span class="badge">coming soon</span>
     </div>
   </div>
