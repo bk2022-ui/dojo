@@ -80,6 +80,10 @@
   .scard .center{text-align:center}
   .kanji{font-size:52px;color:var(--accent);line-height:1;margin-bottom:8px}
   .sname{font-family:"Caveat",cursive;font-size:40px;line-height:1;margin-bottom:4px}
+  .say{display:inline-flex;align-items:center;gap:5px;background:var(--card);border:1px solid var(--line);
+    color:var(--muted);border-radius:999px;padding:5px 12px;font-size:13px;cursor:pointer;font-family:inherit;margin-bottom:8px;box-shadow:var(--shadow)}
+  .say svg{width:15px;height:15px}
+  .say:active{transform:scale(.96)}
   .sdom{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:1px}
   .sstatus{font-size:12px;color:var(--muted);margin-top:10px}
   .back-rev{text-align:left}
@@ -346,6 +350,7 @@ function study(){
       <div class="center">
         <div class="kanji">${c.kanji||""}</div>
         <div class="sname">${c.name}</div>
+        <button class="say" id="saybtn" aria-label="Pronounce ${c.name}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H2v6h4l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M19 5a9 9 0 0 1 0 14"/></svg><span>say it</span></button>
         <div class="sdom">${c.domain}</div>
         <div class="sstatus">${seen(c.id)?("last: "+labelOf(statusOf(c.id))+" · review "+duePhrase(c.id)):"new card"}</div>
       </div>
@@ -364,6 +369,7 @@ function study(){
   </div>`;
   render(h);
   $("scard").onclick=flip;
+  const sb=$("saybtn");if(sb)sb.onclick=e=>{e.stopPropagation();say(c.kanji||c.name)};
   $("app").querySelectorAll(".ratebar button").forEach(b=>b.onclick=()=>doRate(c,b.dataset.r));
   bindActs();
 }
@@ -395,6 +401,17 @@ function labelOf(r){return r==="known"?"Known":r==="heard"?"Heard of":r==="new"?
 
 /* ---------- helpers ---------- */
 function esc(s){return (s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;")}
+function say(text){
+  try{
+    if(!("speechSynthesis" in window)||!text)return;
+    const u=new SpeechSynthesisUtterance(text);
+    u.lang="ja-JP";u.rate=.85;
+    const vs=speechSynthesis.getVoices();
+    const jv=vs.find(v=>/ja[-_]?JP/i.test(v.lang))||vs.find(v=>/japan/i.test(v.name));
+    if(jv)u.voice=jv;
+    speechSynthesis.cancel();speechSynthesis.speak(u);
+  }catch(e){}
+}
 function render(h){$("app").innerHTML=h}
 function bindActs(){
   $("app").querySelectorAll("[data-act]").forEach(b=>{
