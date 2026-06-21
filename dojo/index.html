@@ -3,150 +3,103 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#d6452c">
+<meta name="theme-color" content="#faf6ee">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="Dōjō">
 <title>Dōjō</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@700&display=swap" rel="stylesheet">
 <style>
   :root{
-    --bg:#f4f1ea; --surface:#fffdf8; --ink:#1f1d1a; --muted:#6b675f;
-    --line:rgba(0,0,0,.10); --accent:#d6452c; --accent-soft:#fbe9e4;
-    --good:#2e7d52; --ok:#b8860b; --miss:#c0392b;
-    --r:16px; --safe-top:env(safe-area-inset-top); --safe-bot:env(safe-area-inset-bottom);
+    --paper:#faf6ee;--card:#fffdf8;--ink:#26241f;--muted:#7c766a;--line:rgba(38,36,31,.14);
+    --accent:#c2562f;--accent-soft:#f6e4dc;
+    --unseen:#bdb8ac;--new:#c0573a;--heard:#c8952a;--known:#4a8a5c;
+    --safe-top:env(safe-area-inset-top);--safe-bot:env(safe-area-inset-bottom);
   }
   @media (prefers-color-scheme:dark){
-    :root{--bg:#15140f;--surface:#211f1a;--ink:#f1ede3;--muted:#9d978a;
-      --line:rgba(255,255,255,.12);--accent:#ef6a4f;--accent-soft:#3a221c;}
+    :root{--paper:#15140f;--card:#211f19;--ink:#f0ebe0;--muted:#a39c8c;--line:rgba(240,235,224,.16);
+      --accent:#e0925c;--accent-soft:#3a221c;--unseen:#5f5a4e;}
   }
   *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
   html,body{margin:0;height:100%}
-  body{background:var(--bg);color:var(--ink);
-    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
-    line-height:1.5;overscroll-behavior:none}
-  #app{max-width:560px;margin:0 auto;min-height:100%;display:flex;flex-direction:column;
-    padding:calc(var(--safe-top) + 8px) 16px calc(var(--safe-bot) + 16px)}
-  .top{display:flex;align-items:baseline;gap:10px;padding:6px 2px 14px}
-  .top h1{font-size:26px;margin:0;letter-spacing:.5px}
-  .top .sub{font-size:13px;color:var(--muted)}
-  .view{flex:1;display:flex;flex-direction:column}
-  .hidden{display:none!important}
+  body{background:var(--paper);color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;line-height:1.5}
+  #app{max-width:560px;margin:0 auto;min-height:100svh;display:flex;flex-direction:column;
+    padding:calc(var(--safe-top) + 10px) 16px calc(var(--safe-bot) + 16px)}
+  .hdr{display:flex;align-items:center;gap:10px;margin:2px 0 14px;min-height:34px}
+  .hdr h1{font-family:"Caveat",cursive;font-size:34px;margin:0;flex:1}
+  .hdr .sub{font-size:13px;color:var(--muted)}
+  .back{background:none;border:none;color:var(--ink);font-size:26px;line-height:1;padding:0 8px 0 0;cursor:pointer}
+  .iconbtn{background:none;border:none;color:var(--muted);font-size:20px;cursor:pointer;padding:6px}
+  .serif{font-family:"Caveat",cursive}
 
-  .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:18px}
-  .stat{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:14px 10px;text-align:center}
-  .stat b{display:block;font-size:24px}
-  .stat span{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px}
+  .stats{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
+  .stat{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px 14px}
+  .stat b{font-size:24px;display:block;line-height:1.1}
+  .stat span{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px}
 
-  .chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:20px}
-  .chip{border:1px solid var(--line);background:var(--surface);color:var(--ink);
-    border-radius:999px;padding:7px 13px;font-size:13px;cursor:pointer}
-  .chip.on{background:var(--accent);color:#fff;border-color:var(--accent)}
+  .cta{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;border:none;
+    background:var(--accent);color:#fff;border-radius:14px;padding:15px;font-size:16px;font-weight:600;
+    cursor:pointer;margin-bottom:18px;font-family:inherit}
+  .cta.soft{background:var(--card);color:var(--ink);border:1px solid var(--line)}
+  .cta:disabled{opacity:.45}
 
-  .btn{display:block;width:100%;border:none;border-radius:var(--r);padding:17px;
-    font-size:17px;font-weight:600;cursor:pointer;margin-top:12px;font-family:inherit}
-  .btn.primary{background:var(--accent);color:#fff}
-  .btn.ghost{background:var(--surface);color:var(--ink);border:1px solid var(--line)}
-  .btn:active{transform:scale(.985)}
+  .sectitle{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.6px;margin:4px 2px 8px}
+  .catlist,.cardlist{display:flex;flex-direction:column;gap:9px}
+  .row{display:flex;align-items:center;gap:12px;background:var(--card);border:1px solid var(--line);
+    border-radius:14px;padding:13px 14px;cursor:pointer;text-align:left;width:100%;color:inherit;font-family:inherit}
+  .row:active{transform:scale(.99)}
+  .catrow{flex-wrap:wrap}
+  .catrow .cname{font-size:17px;font-weight:600;flex:1}
+  .catrow .cnum{font-size:13px;color:var(--muted)}
+  .duebadge{font-size:12px;font-weight:600;color:var(--accent);background:var(--accent-soft);
+    border-radius:999px;padding:2px 9px;margin-left:8px}
+  .bar{flex-basis:100%;height:5px;background:var(--line);border-radius:5px;overflow:hidden;margin-top:4px}
+  .bar i{display:block;height:100%;background:var(--known)}
+  .chev{color:var(--muted);font-size:20px}
+
+  .dot{width:11px;height:11px;border-radius:50%;flex-shrink:0;background:var(--unseen)}
+  .dot.new{background:var(--new)}.dot.heard{background:var(--heard)}.dot.known{background:var(--known)}
+  .cr-main{flex:1;min-width:0}
+  .cr-name{font-size:16px;font-weight:600}
+  .cr-name em{font-style:normal;color:var(--muted);font-weight:400;margin-left:6px}
+  .cr-next{font-size:12px;color:var(--muted)}
+  .cr-due{color:var(--accent);font-weight:600}
+
+  .legend{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;color:var(--muted);margin:14px 2px 0;justify-content:center}
+  .legend span{display:flex;align-items:center;gap:5px}
+
+  .study{flex:1;display:flex;flex-direction:column}
+  .sessbar{font-size:13px;color:var(--muted);text-align:center;margin-bottom:8px}
+  .scard{flex:1;background:var(--card);border:1px solid var(--line);border-radius:20px;
+    padding:26px 22px;display:flex;flex-direction:column;justify-content:center;min-height:320px;cursor:pointer}
+  .scard .center{text-align:center}
+  .kanji{font-size:52px;color:var(--accent);line-height:1;margin-bottom:8px}
+  .sname{font-family:"Caveat",cursive;font-size:40px;line-height:1;margin-bottom:4px}
+  .sdom{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:1px}
+  .sstatus{font-size:12px;color:var(--muted);margin-top:10px}
+  .back-rev{margin-top:6px;text-align:left}
+  .lbl{font-size:11px;text-transform:uppercase;letter-spacing:.7px;color:var(--accent);font-weight:600;margin:16px 0 3px}
+  .back-rev p{margin:0;font-size:16px}
+  .hint{color:var(--muted);font-size:14px;text-align:center;margin-top:16px}
+  .rate{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}
+  .rate button{border:none;border-radius:13px;padding:14px 4px;color:#fff;font-weight:600;font-size:14px;
+    cursor:pointer;font-family:inherit;line-height:1.2}
+  .rate small{display:block;font-weight:400;opacity:.85;font-size:10px;margin-top:2px}
+  .r-known{background:var(--known)}.r-heard{background:var(--heard)}.r-new{background:var(--new)}
+  .toast{text-align:center;font-size:14px;color:var(--ink);background:var(--accent-soft);
+    border-radius:12px;padding:10px;margin-top:12px}
+  .ghost{background:var(--card);border:1px solid var(--line);color:var(--ink);border-radius:13px;
+    padding:13px;font-size:15px;cursor:pointer;font-family:inherit;width:100%;margin-top:10px}
+  .empty{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;text-align:center;color:var(--muted)}
+  .empty .big{font-size:42px}
   .spacer{flex:1}
-
-  .card{background:var(--surface);border:1px solid var(--line);border-radius:22px;
-    padding:26px 22px;flex:1;display:flex;flex-direction:column;justify-content:center;
-    min-height:300px;text-align:center}
-  .kanji{font-size:54px;line-height:1;margin:0 0 6px;color:var(--accent)}
-  .name{font-size:26px;margin:0 0 4px;font-weight:600}
-  .domain{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:18px}
-  .hint{color:var(--muted);font-size:14px;margin-top:18px}
-  .reveal{text-align:left;margin-top:6px}
-  .reveal .lbl{font-size:11px;text-transform:uppercase;letter-spacing:.8px;color:var(--accent);margin:16px 0 4px;font-weight:600}
-  .reveal p{margin:0;font-size:16px}
-  .q{font-size:19px;text-align:center;margin:0}
-
-  .rate{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:14px}
-  .rate button{border:none;border-radius:14px;padding:14px 6px;font-size:13px;font-weight:600;
-    cursor:pointer;color:#fff;font-family:inherit;line-height:1.25}
-  .r-known,.r-good{background:var(--good)} .r-heard,.r-ok{background:var(--ok)} .r-unknown,.r-miss{background:var(--miss)}
-  .rate small{display:block;font-weight:400;opacity:.85;font-size:10px}
-
-  .empty{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;color:var(--muted);gap:8px}
-  .empty .big{font-size:40px}
-  .progresstrack{height:4px;background:var(--line);border-radius:4px;margin:2px 0 16px;overflow:hidden}
-  .progresstrack i{display:block;height:100%;background:var(--accent);width:0%}
-  .reset{background:none;border:none;color:var(--muted);font-size:12px;text-decoration:underline;margin-top:16px;cursor:pointer;align-self:center}
 </style>
 </head>
 <body>
-<div id="app">
-  <div class="top"><h1>Dōjō</h1><span class="sub" id="subtitle">concepts, internalised</span></div>
-
-  <!-- HOME -->
-  <div class="view" id="home">
-    <div class="stats">
-      <div class="stat"><b id="s-total">0</b><span>cards</span></div>
-      <div class="stat"><b id="s-known">0</b><span>known</span></div>
-      <div class="stat"><b id="s-due">0</b><span>due</span></div>
-    </div>
-    <div class="chips" id="chips"></div>
-    <div class="spacer"></div>
-    <button class="btn primary" id="go-learn">Learn — flip &amp; rate</button>
-    <button class="btn ghost" id="go-review">Review — flashcards</button>
-    <button class="reset" id="reset">reset progress</button>
-  </div>
-
-  <!-- LEARN -->
-  <div class="view hidden" id="learn">
-    <div class="progresstrack"><i id="learn-bar"></i></div>
-    <div class="card" id="learn-card">
-      <div>
-        <p class="kanji" id="l-kanji"></p>
-        <p class="name" id="l-name"></p>
-        <p class="domain" id="l-domain"></p>
-      </div>
-      <div id="l-back" class="reveal hidden">
-        <div class="lbl">What it means</div><p id="l-desc"></p>
-        <div class="lbl">In practice</div><p id="l-ex"></p>
-      </div>
-      <p class="hint" id="l-hint">tap to reveal</p>
-    </div>
-    <div id="l-rate" class="rate hidden">
-      <button class="r-known" data-r="known">Known<small>solid</small></button>
-      <button class="r-heard" data-r="heard">Heard of<small>vaguely</small></button>
-      <button class="r-unknown" data-r="unknown">New<small>teach me</small></button>
-    </div>
-    <button class="btn ghost" id="learn-exit">Done for now</button>
-  </div>
-
-  <!-- REVIEW -->
-  <div class="view hidden" id="review">
-    <div class="progresstrack"><i id="rev-bar"></i></div>
-    <div class="card" id="review-card">
-      <div>
-        <p class="domain" id="r-domain"></p>
-        <p class="q" id="r-q"></p>
-      </div>
-      <div id="r-back" class="reveal hidden">
-        <div class="lbl" id="r-aname"></div><p id="r-a"></p>
-        <div class="lbl">What it means</div><p id="r-desc"></p>
-      </div>
-      <p class="hint" id="r-hint">recall it, then tap</p>
-    </div>
-    <div id="r-grade" class="rate hidden">
-      <button class="r-good" data-g="good">Got it<small>easy</small></button>
-      <button class="r-ok" data-g="almost">Almost<small>fuzzy</small></button>
-      <button class="r-miss" data-g="missed">Missed<small>again soon</small></button>
-    </div>
-    <button class="btn ghost" id="review-exit">Done for now</button>
-  </div>
-
-  <!-- DONE -->
-  <div class="view hidden" id="done">
-    <div class="empty">
-      <div class="big">🍵</div>
-      <p id="done-msg">Nice work.</p>
-    </div>
-    <button class="btn primary" id="done-home">Back to home</button>
-  </div>
-</div>
-
+<div id="app"></div>
 <script>
 const CARDS = [
  {"id": "gemba", "name": "Gemba", "kanji": "現場", "domain": "Manufacturing", "description": "Gemba means 'the actual place' where real work happens and value is created. The principle is that managers should go to where the work is rather than rely on reports.", "example": "Instead of reviewing a slide deck about declining call-center performance, a consultant sits on the floor listening to live calls to see what is actually slowing agents down.", "q": "What is Gemba and why does it matter to a manager?", "a": "Gemba is the real place where work happens; managers should go there directly because the truth of a problem lives at the source, not in reports."},
@@ -265,81 +218,192 @@ const CARDS = [
 ];
 
 const KEY="dojo.progress.v1";
-const load=()=>{try{return JSON.parse(localStorage.getItem(KEY))||{}}catch(e){return{}}};
-const save=p=>localStorage.setItem(KEY,JSON.stringify(p));
-let prog=load();
-let filter="all";
-const DAY=864e5;
-const INT=[0,1,3,7,16,30];
-const $=id=>document.getElementById(id);
-const show=v=>["home","learn","review","done"].forEach(x=>$(x).classList.toggle("hidden",x!==v));
-const deck=()=>CARDS.filter(c=>filter==="all"||c.domain.toLowerCase()===filter);
-const dueList=()=>{const n=Date.now();return deck().filter(c=>{const p=prog[c.id];return !p||!p.box||(p.due||0)<=n})};
+const DAY=864e5, MIN=6e4, INT=[0,1,3,7,16,30];
+let prog = load();
+let nav = {view:"home"};
+const $=s=>document.getElementById(s);
+function load(){try{return JSON.parse(localStorage.getItem(KEY))||{}}catch(e){return{}}}
+function save(){localStorage.setItem(KEY,JSON.stringify(prog))}
 
-function renderHome(){
-  const d=deck();
-  $("s-total").textContent=d.length;
-  $("s-known").textContent=d.filter(c=>prog[c.id]&&prog[c.id].status==="known").length;
-  $("s-due").textContent=dueList().length;
-  const doms=["all",...[...new Set(CARDS.map(c=>c.domain.toLowerCase()))]];
-  $("chips").innerHTML=doms.map(x=>`<div class="chip ${x===filter?'on':''}" data-d="${x}">${x}</div>`).join("");
-  document.querySelectorAll(".chip").forEach(ch=>ch.onclick=()=>{filter=ch.dataset.d;renderHome()});
-  show("home");
+const DOMAINS = [...new Set(CARDS.map(c=>c.domain))];
+const inDomain = d => CARDS.filter(c=>c.domain===d);
+function seen(id){const p=prog[id];return p&&p.seen}
+function statusOf(id){const p=prog[id];if(!p||!p.seen)return"unseen";return p.r||"unseen"}
+function isDue(id){const p=prog[id];if(!p||!p.seen)return false;return (p.due||0)<=Date.now()}
+function isNew(id){return !seen(id)}
+function knownCount(list){return list.filter(c=>statusOf(c.id)==="known").length}
+function dueList(list){return list.filter(c=>isDue(c.id))}
+function newList(list){return list.filter(c=>isNew(c.id))}
+
+function rate(id,r){
+  const p = prog[id] || {box:0,seen:0};
+  if(r==="known"){p.box=Math.min((p.box||0)+1,5);p.due=Date.now()+INT[p.box]*DAY;}
+  else if(r==="heard"){p.box=Math.max(p.box||0,1);p.due=Date.now()+1*DAY;}
+  else {p.box=0;p.due=Date.now()+10*MIN;}
+  p.r=r;p.seen=(p.seen||0)+1;p.last=Date.now();
+  prog[id]=p;save();
+}
+function nextLabel(id){
+  const p=prog[id];if(!p||!p.seen)return"new";
+  const d=p.due-Date.now();
+  if(d<=0)return"due now";
+  const days=Math.round(d/DAY);
+  if(days<1)return"today";
+  if(days<30)return days+"d";
+  return Math.round(days/30)+"mo";
+}
+function duePhrase(id){
+  const p=prog[id];if(!p)return"";
+  const d=p.due-Date.now();const days=Math.round(d/DAY);
+  if(d<=0)return"now";if(days<1)return"later today";if(days===1)return"tomorrow";
+  if(days<30)return"in "+days+" days";return"in "+Math.round(days/30)+" months";
 }
 
-/* LEARN */
-let lQueue=[],lIdx=0;
-function startLearn(){lQueue=deck().slice();lIdx=0;if(!lQueue.length)return finish("Nothing here yet.");nextLearn()}
-function nextLearn(){
-  if(lIdx>=lQueue.length)return finish("You've been through the deck.");
-  const c=lQueue[lIdx];
-  $("l-kanji").textContent=c.kanji;$("l-name").textContent=c.name;$("l-domain").textContent=c.domain;
-  $("l-desc").textContent=c.description;$("l-ex").textContent=c.example;
-  $("l-back").classList.add("hidden");$("l-rate").classList.add("hidden");$("l-hint").classList.remove("hidden");
-  $("learn-bar").style.width=Math.round(lIdx/lQueue.length*100)+"%";
-  show("learn");
+/* ---------- HOME ---------- */
+function home(){
+  nav={view:"home"};
+  const all=CARDS, known=knownCount(all), due=dueList(all).length;
+  let h=`<div class="hdr"><h1>Dōjō</h1><span class="sub">${all.length} cards</span></div>
+  <div class="stats">
+    <div class="stat"><b>${known}</b><span>known</span></div>
+    <div class="stat"><b>${due}</b><span>due now</span></div>
+  </div>`;
+  if(due>0) h+=`<button class="cta" data-act="reviewall">Review due · ${due} →</button>`;
+  else h+=`<button class="cta" data-act="learnall">Start learning →</button>`;
+  h+=`<div class="sectitle">Categories</div><div class="catlist">`;
+  DOMAINS.forEach(d=>{
+    const list=inDomain(d), k=knownCount(list), du=dueList(list).length;
+    const pct=Math.round(k/list.length*100);
+    h+=`<button class="row catrow" data-dom="${d}">
+      <span class="cname">${d}</span>
+      <span class="cnum">${k}/${list.length} known</span>
+      ${du>0?`<span class="duebadge">${du} due</span>`:""}
+      <span class="chev">›</span>
+      <span class="bar"><i style="width:${pct}%"></i></span>
+    </button>`;
+  });
+  h+=`</div>
+  <div class="legend">
+    <span><i class="dot"></i>new</span><span><i class="dot new"></i>don't know</span>
+    <span><i class="dot heard"></i>heard of</span><span><i class="dot known"></i>known</span>
+  </div>
+  <div class="spacer"></div>
+  <button class="iconbtn" data-act="reset" style="align-self:center;margin-top:14px">reset progress</button>`;
+  render(h);
+  $("app").querySelectorAll("[data-dom]").forEach(b=>b.onclick=()=>category(b.dataset.dom));
+  bindActs();
 }
-$("learn-card").onclick=()=>{if($("l-back").classList.contains("hidden")){
-  $("l-back").classList.remove("hidden");$("l-hint").classList.add("hidden");$("l-rate").classList.remove("hidden");}};
-document.querySelectorAll("#l-rate button").forEach(b=>b.onclick=()=>{
-  const c=lQueue[lIdx];const r=b.dataset.r;
-  const p=prog[c.id]||{};p.status=r;p.box=r==="known"?2:r==="heard"?1:0;
-  p.due=Date.now()+INT[p.box]*DAY;p.seen=(p.seen||0)+1;prog[c.id]=p;save(prog);
-  lIdx++;nextLearn();
-});
-$("learn-exit").onclick=()=>renderHome();
 
-/* REVIEW */
-let rQueue=[],rIdx=0;
-function startReview(){rQueue=dueList();rIdx=0;if(!rQueue.length)return finish("All caught up — nothing due. 🌱");nextReview()}
-function nextReview(){
-  if(rIdx>=rQueue.length)return finish("Review complete. 🍵");
-  const c=rQueue[rIdx];
-  $("r-domain").textContent=c.domain;$("r-q").textContent=c.q;
-  $("r-aname").textContent=c.name+(c.kanji?"  "+c.kanji:"");$("r-a").textContent=c.a;$("r-desc").textContent=c.description;
-  $("r-back").classList.add("hidden");$("r-grade").classList.add("hidden");$("r-hint").classList.remove("hidden");
-  $("rev-bar").style.width=Math.round(rIdx/rQueue.length*100)+"%";
-  show("review");
+/* ---------- CATEGORY ---------- */
+function category(d){
+  nav={view:"category",dom:d};
+  const list=inDomain(d), k=knownCount(list), du=dueList(list).length, nw=newList(list).length;
+  let h=`<div class="hdr"><button class="back" data-act="home">‹</button><h1 style="font-size:28px">${d}</h1></div>
+  <div class="stats">
+    <div class="stat"><b>${k}/${list.length}</b><span>known</span></div>
+    <div class="stat"><b>${du}</b><span>due now</span></div>
+  </div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px">
+    <button class="cta soft" data-act="learncat" ${nw?"":"disabled"}>Learn new · ${nw}</button>
+    <button class="cta soft" data-act="reviewcat" ${du?"":"disabled"}>Review due · ${du}</button>
+  </div>
+  <div class="sectitle">All cards — tap any to study</div>
+  <div class="cardlist">`;
+  list.forEach(c=>{
+    h+=`<button class="row" data-id="${c.id}">
+      <span class="dot ${statusOf(c.id)==="unseen"?"":statusOf(c.id)}"></span>
+      <span class="cr-main"><span class="cr-name">${c.name}<em>${c.kanji||""}</em></span></span>
+      <span class="cr-next ${isDue(c.id)?"cr-due":""}">${nextLabel(c.id)}</span>
+    </button>`;
+  });
+  h+=`</div>`;
+  render(h);
+  $("app").querySelectorAll("[data-id]").forEach(b=>b.onclick=()=>startSession([b.dataset.id],{ret:"category",dom:d}));
+  bindActs();
 }
-$("review-card").onclick=()=>{if($("r-back").classList.contains("hidden")){
-  $("r-back").classList.remove("hidden");$("r-hint").classList.add("hidden");$("r-grade").classList.remove("hidden");}};
-document.querySelectorAll("#r-grade button").forEach(b=>b.onclick=()=>{
-  const c=rQueue[rIdx];const g=b.dataset.g;const p=prog[c.id]||{box:0};
-  if(g==="good")p.box=Math.min((p.box||0)+1,5),p.due=Date.now()+INT[p.box]*DAY;
-  else if(g==="almost")p.due=Date.now()+1*DAY;
-  else p.box=0,p.due=Date.now()+6e5;
-  p.seen=(p.seen||0)+1;prog[c.id]=p;save(prog);
-  rIdx++;nextReview();
-});
-$("review-exit").onclick=()=>renderHome();
 
-function finish(msg){$("done-msg").textContent=msg;show("done")}
-$("done-home").onclick=()=>renderHome();
-$("go-learn").onclick=startLearn;
-$("go-review").onclick=startReview;
-$("reset").onclick=()=>{if(confirm("Reset all progress?")){prog={};save(prog);renderHome()}};
+/* ---------- STUDY SESSION ---------- */
+let sess=null;
+function startSession(ids,opts){
+  if(!ids.length)return;
+  sess={ids, i:0, ret:opts.ret, dom:opts.dom, flipped:false, rated:false};
+  nav={view:"study"};
+  study();
+}
+function study(){
+  const c=CARDS.find(x=>x.id===sess.ids[sess.i]);
+  const total=sess.ids.length;
+  let h=`<div class="hdr"><button class="back" data-act="exit">‹</button><span class="sub" style="flex:1;text-align:center">${sess.i+1} / ${total}</span><span style="width:24px"></span></div>
+  <div class="study">
+    <div class="scard" id="scard">
+      <div class="center">
+        <div class="kanji">${c.kanji||""}</div>
+        <div class="sname">${c.name}</div>
+        <div class="sdom">${c.domain}</div>
+        <div class="sstatus">${seen(c.id)?("you marked: "+labelOf(statusOf(c.id))+" · next "+duePhrase(c.id)):"new card"}</div>
+      </div>
+      <div id="rev" class="back-rev" style="display:none">
+        <div class="lbl">What it means</div><p>${esc(c.description)}</p>
+        <div class="lbl">In practice</div><p>${esc(c.example)}</p>
+        <div class="lbl">Test yourself</div><p>${esc(c.q)}</p>
+      </div>
+      <div class="hint" id="hint">tap to reveal</div>
+    </div>
+    <div id="rate" class="rate" style="display:none">
+      <button class="r-known" data-r="known">Known<small>solid</small></button>
+      <button class="r-heard" data-r="heard">Heard of<small>vaguely</small></button>
+      <button class="r-new" data-r="new">Don't know<small>teach me</small></button>
+    </div>
+    <div id="after"></div>
+  </div>`;
+  render(h);
+  $("scard").onclick=flip;
+  $("app").querySelectorAll("#rate button").forEach(b=>b.onclick=()=>doRate(c,b.dataset.r));
+  bindActs();
+}
+function flip(){
+  if(sess.flipped)return;
+  sess.flipped=true;
+  $("rev").style.display="block";$("hint").style.display="none";$("rate").style.display="grid";
+}
+function doRate(c,r){
+  rate(c.id,r);
+  const after=$("after");
+  after.innerHTML=`<div class="toast">Marked <b>${labelOf(r)}</b> · review ${duePhrase(c.id)}</div>`;
+  $("rate").style.display="none";
+  if(sess.i < sess.ids.length-1){
+    after.innerHTML+=`<button class="cta" data-act="next">Next card →</button>`;
+  }else{
+    after.innerHTML+=`<button class="cta" data-act="exit">Done ·return</button>`;
+  }
+  bindActs();
+}
+function nextCard(){sess.i++;sess.flipped=false;study();}
+function exitSession(){
+  const ret=sess?sess.ret:"home", dom=sess?sess.dom:null; sess=null;
+  if(ret==="category"&&dom)category(dom);else home();
+}
+function labelOf(r){return r==="known"?"Known":r==="heard"?"Heard of":r==="new"?"Don't know":"new"}
 
-renderHome();
+/* ---------- helpers ---------- */
+function esc(s){return (s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;")}
+function render(h){$("app").innerHTML=h}
+function bindActs(){
+  $("app").querySelectorAll("[data-act]").forEach(b=>{
+    const a=b.dataset.act;
+    b.onclick=()=>{
+      if(a==="home")home();
+      else if(a==="reviewall")startSession(dueList(CARDS).map(c=>c.id),{ret:"home"});
+      else if(a==="learnall")startSession(newList(CARDS).slice(0,20).map(c=>c.id),{ret:"home"});
+      else if(a==="learncat")startSession(newList(inDomain(nav.dom)).map(c=>c.id),{ret:"category",dom:nav.dom});
+      else if(a==="reviewcat")startSession(dueList(inDomain(nav.dom)).map(c=>c.id),{ret:"category",dom:nav.dom});
+      else if(a==="next")nextCard();
+      else if(a==="exit")exitSession();
+      else if(a==="reset"){if(confirm("Reset all your progress?")){prog={};save();home();}}
+    };
+  });
+}
+home();
 </script>
 </body>
 </html>
