@@ -37,7 +37,7 @@
   .iconbtn{background:none;border:none;color:var(--muted);font-size:14px;cursor:pointer;padding:6px;text-decoration:underline}
 
   .pad{padding-bottom:calc(var(--safe-bot) + 16px)}
-  .stats{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
+  .stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:14px}
   .stat{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px 14px;box-shadow:var(--shadow)}
   .stat b{font-size:24px;display:block;line-height:1.1}
   .stat span{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px}
@@ -46,6 +46,7 @@
     background:var(--accent);color:#fff;border-radius:14px;padding:15px;font-size:16px;font-weight:600;
     cursor:pointer;margin-bottom:18px;font-family:inherit}
   .cta.soft{background:var(--card);color:var(--ink);border:1px solid var(--line)}
+  .cta.dk{background:var(--nk-bg);color:var(--nk-fg)}
   .cta:disabled{opacity:.45}
 
   .sectitle{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.6px;margin:4px 2px 8px}
@@ -243,6 +244,11 @@ function isNew(id){return !seen(id)}
 function knownCount(list){return list.filter(c=>statusOf(c.id)==="known").length}
 function dueList(list){return list.filter(c=>isDue(c.id))}
 function newList(list){return list.filter(c=>isNew(c.id))}
+function dontKnowList(list){
+  return list
+    .filter(c=>statusOf(c.id)==="new")
+    .sort((a,b)=>(prog[a.id]&&prog[a.id].due||0)-(prog[b.id]&&prog[b.id].due||0));
+}
 
 function rate(id,r){
   const p = prog[id] || {box:0,seen:0};
@@ -271,15 +277,17 @@ function duePhrase(id){
 /* ---------- HOME ---------- */
 function home(){
   nav={view:"home"};
-  const all=CARDS, known=knownCount(all), due=dueList(all).length;
+  const all=CARDS, known=knownCount(all), due=dueList(all).length, dk=dontKnowList(all).length;
   let h=`<div class="hdr"><h1>Dōjō</h1><span class="sub">${all.length} cards</span></div>
   <div class="pad">
   <div class="stats">
     <div class="stat"><b>${known}</b><span>known</span></div>
+    <div class="stat"><b>${dk}</b><span>don't know</span></div>
     <div class="stat"><b>${due}</b><span>due now</span></div>
   </div>`;
   if(due>0) h+=`<button class="cta" data-act="reviewall">Review due · ${due} →</button>`;
   else h+=`<button class="cta" data-act="learnall">Start learning →</button>`;
+  if(dk>0) h+=`<button class="cta dk" data-act="learnunknown">Teach me what I don't know · ${dk} →</button>`;
   h+=`<div class="sectitle">Categories</div><div class="catlist">`;
   DOMAINS.forEach(d=>{
     const list=inDomain(d), k=knownCount(list), du=dueList(list).length;
@@ -378,13 +386,27 @@ function flip(){
   sess.flipped=true;
   $("rev").style.display="block";$("hint").style.display="none";
 }
-function doRate(c,r){
-  rate(c.id,r);
+function advance(){
   if(sess.i < sess.ids.length-1){ sess.i++; sess.flipped=false; study(); return; }
   const multi=sess.ids.length>1, ret=sess.ret, dom=sess.dom, n=sess.ids.length; sess=null;
   if(multi) doneScreen(n,ret,dom);
   else if(ret==="category"&&dom) category(dom);
   else home();
+}
+function teach(c){
+  if(!sess.flipped){
+    sess.flipped=true;
+    const rev=$("rev"); if(rev) rev.style.display="block";
+    const hint=$("hint"); if(hint) hint.style.display="none";
+  }
+  const rb=$("app").querySelector(".ratebar");
+  if(rb) rb.innerHTML=`<button class="cta" id="gotit" style="margin:0;border-radius:13px;grid-column:1/-1">Got it — keep going →</button>`;
+  const g=$("gotit"); if(g) g.onclick=advance;
+}
+function doRate(c,r){
+  rate(c.id,r);
+  if(r==="new"){teach(c);return;}
+  advance();
 }
 function doneScreen(n,ret,dom){
   nav={view:"done",dom:dom,ret:ret};
@@ -421,6 +443,7 @@ function bindActs(){
       else if(a==="backcat")category(nav.dom);
       else if(a==="reviewall")startSession(dueList(CARDS).map(c=>c.id),{ret:"home"});
       else if(a==="learnall")startSession(newList(CARDS).slice(0,20).map(c=>c.id),{ret:"home"});
+      else if(a==="learnunknown")startSession(dontKnowList(CARDS).map(c=>c.id),{ret:"home"});
       else if(a==="learncat")startSession(newList(inDomain(nav.dom)).map(c=>c.id),{ret:"category",dom:nav.dom});
       else if(a==="reviewcat")startSession(dueList(inDomain(nav.dom)).map(c=>c.id),{ret:"category",dom:nav.dom});
       else if(a==="exit")exitSession();
