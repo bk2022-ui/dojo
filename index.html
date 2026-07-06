@@ -1,91 +1,840 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#faf6ee">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="default">
-<meta name="apple-mobile-web-app-title" content="Napkin Solo">
+<html lang="en"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Napkin Solo</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Patrick+Hand&display=swap" rel="stylesheet">
 <style>
   :root{
-    --paper:#faf6ee; --card:#fffdf8; --ink:#26241f; --muted:#7c766a;
-    --line:#26241f; --soon:#b06a3a;
-    --safe-top:env(safe-area-inset-top); --safe-bot:env(safe-area-inset-bottom);
+    --paper:#FFFDF6; --paper2:#FBF6EA; --stroke:#E7DFCB; --ink:#2C2A26; --sub:#46433c;
+    --muted:#6f685c; --floor:#9b937f; --coral:#C56A40; --coral-soft:#F4B393;
+    --hand:'Bradley Hand','Marker Felt','Chalkboard SE','Comic Sans MS',cursive;
+    --sans:'Inter','Helvetica Neue',-apple-system,system-ui,sans-serif;
+    --serif:'Iowan Old Style','Palatino','Georgia',serif;
   }
-  @media (prefers-color-scheme:dark){
-    :root{--paper:#1a1813; --card:#231f19; --ink:#f0ebe0; --muted:#a39c8c;
-      --line:#f0ebe0; --soon:#e0925c;}
-  }
-  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-  html,body{margin:0;min-height:100%}
-  body{background:var(--paper);color:var(--ink);
-    font-family:"Patrick Hand",-apple-system,sans-serif;
-    display:flex;flex-direction:column;align-items:center;justify-content:center;
-    min-height:100svh;padding:calc(var(--safe-top) + 22px) 20px calc(var(--safe-bot) + 20px);
-    text-align:center}
-  .brand{font-family:"Caveat",cursive;font-weight:700;font-size:52px;line-height:1;margin:0 0 2px}
-  .underline{width:188px;max-width:64vw;height:13px;margin:0 auto 12px;display:block;color:var(--ink)}
-  .tag{font-size:19px;color:var(--muted);margin:0 0 26px;max-width:30ch}
-  .cards{display:flex;flex-direction:column;gap:14px;width:100%;max-width:400px}
-  .card{display:flex;align-items:center;gap:15px;text-align:left;
-    background:var(--card);border:2.5px solid var(--line);border-radius:18px;
-    padding:15px 17px;text-decoration:none;color:inherit;
-    transition:transform .12s ease, box-shadow .12s ease}
-  .card.live:active{transform:translateY(-2px);box-shadow:5px 6px 0 -2px var(--line)}
-  @media (hover:hover){ .card.live:hover{transform:translateY(-2px);box-shadow:5px 6px 0 -2px var(--line)} }
-  .icon{width:46px;height:46px;flex-shrink:0;color:var(--ink)}
-  .ctext{flex:1;min-width:0}
-  .name{font-family:"Caveat",cursive;font-weight:700;font-size:30px;line-height:1.05}
-  .desc{font-size:15px;color:var(--muted);line-height:1.25;margin-top:1px}
-  .end{flex-shrink:0;font-size:20px;color:var(--ink);opacity:.75}
-  .card.soon{opacity:.72}
-  .badge{flex-shrink:0;font-size:13px;color:var(--soon);
-    border:2px dashed var(--soon);border-radius:999px;padding:3px 11px;transform:rotate(-2deg);white-space:nowrap}
-  .foot{margin-top:30px;font-size:15px;color:var(--muted)}
-</style>
-</head>
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);
+    font-size:16px;line-height:1.6;background-image:radial-gradient(var(--stroke) .5px,transparent .5px);background-size:24px 24px;}
+  .co-wrap{max-width:760px;margin:0 auto;padding:44px 24px 40px}
+  [id]{scroll-margin-top:74px}
+  .co-nav{position:sticky;top:0;z-index:50;background:rgba(255,253,246,.9);
+    -webkit-backdrop-filter:blur(9px);backdrop-filter:blur(9px);border-bottom:1px solid var(--stroke);
+    display:flex;align-items:center;justify-content:space-between;padding:11px 22px;gap:16px}
+  .co-brand{font-family:var(--hand);font-size:21px;color:var(--ink);text-decoration:none;white-space:nowrap}
+  .co-brand span{font-family:var(--sans);font-size:10px;letter-spacing:1.4px;text-transform:uppercase;color:var(--muted);margin-left:9px}
+  .co-navlinks{display:flex;align-items:center;gap:20px;font-size:14px}
+  .co-navlinks>a{color:var(--sub);text-decoration:none} .co-navlinks>a:hover{color:var(--coral)}
+  .co-dd{position:relative}
+  .co-dd>summary{cursor:pointer;list-style:none;color:var(--sub)}
+  .co-dd>summary::-webkit-details-marker{display:none}
+  .co-dd>summary::after{content:" ▾";font-size:11px;color:var(--muted)}
+  .co-dd[open]>summary::after{content:" ▴"}
+  .co-dd-menu{position:absolute;top:170%;right:0;background:var(--paper);border:1.5px solid var(--stroke);
+    border-radius:12px;padding:7px;min-width:255px;box-shadow:2px 7px 20px rgba(44,42,38,.12);display:flex;flex-direction:column;z-index:60}
+  .co-dd-item{padding:7px 12px;border-radius:8px;color:var(--sub);text-decoration:none;font-size:14px;cursor:pointer}
+  .co-dd-item:hover{background:var(--paper2);color:var(--ink)}
+  .co-dd-cur{color:var(--coral)}
+  .co-dd-sub{padding:6px 12px;font-size:11px;letter-spacing:1px;text-transform:uppercase;color:var(--floor);margin-top:4px}
+  .co-dd-soon{padding:7px 12px;border-radius:8px;color:var(--muted);text-decoration:none;font-size:14px;cursor:pointer;display:flex;justify-content:space-between}
+  .co-dd-soon:hover{background:var(--paper2)}
+  .co-dd-soon em{font-style:normal;font-size:10px;color:var(--floor);border:1px solid var(--stroke);border-radius:20px;padding:1px 7px}
+  @media(max-width:560px){.co-brand span{display:none} .co-navlinks{gap:14px;font-size:13px}}
+  .co-eyebrow{font-size:12.5px;letter-spacing:2.5px;text-transform:uppercase;color:var(--muted);margin:0 0 14px}
+  h1{font-family:var(--hand);font-size:56px;line-height:1.02;margin:0 0 14px;letter-spacing:.5px;text-wrap:balance}
+  .co-idea{font-family:var(--serif);font-size:23px;line-height:1.4;color:var(--sub);margin:0 0 6px;max-width:36ch}
+  .co-tags{margin:18px 0 40px}
+  .co-tag{display:inline-block;font-size:11.5px;color:var(--muted);border:1px solid var(--stroke);border-radius:20px;padding:3px 11px;margin:0 5px 5px 0}
+  .co-tw{margin:8px 0 40px}
+  .co-lead{font-family:var(--hand);font-size:19px;color:var(--coral);margin:0 0 14px;text-align:center}
+  .co-radio{position:absolute;opacity:0;pointer-events:none}
+  .co-tabs{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-bottom:16px}
+  .co-tab{cursor:pointer;border:1.5px solid var(--stroke);border-radius:12px;padding:8px 16px;text-align:center;background:var(--paper);transition:border-color .15s,color .15s;color:var(--muted)}
+  .co-tab b{font-family:var(--hand);font-size:18px;display:block;color:var(--ink)}
+  .co-tab span{font-size:11.5px;color:var(--muted)}
+  .co-panel{display:none}
+  .co-stage{background:var(--paper);border:1.5px solid var(--stroke);border-radius:16px;padding:14px;box-shadow:3px 4px 0 rgba(231,223,203,.5);text-align:center}
+  .co-stage svg{display:block;width:100%;max-width:600px;height:auto;margin:0 auto}
+  .co-cap{font-family:var(--serif);font-size:16.5px;color:var(--sub);max-width:56ch;margin:18px auto 0;text-align:center}
+  #w0-0:checked ~ .co-panels .co-p0-0{display:block} #w0-0:checked ~ .co-tabs label[for=w0-0]{color:var(--ink);border-color:var(--coral)} #w0-0:focus-visible ~ .co-tabs label[for=w0-0]{outline:2px solid var(--coral);outline-offset:2px} #w0-1:checked ~ .co-panels .co-p0-1{display:block} #w0-1:checked ~ .co-tabs label[for=w0-1]{color:var(--ink);border-color:var(--coral)} #w0-1:focus-visible ~ .co-tabs label[for=w0-1]{outline:2px solid var(--coral);outline-offset:2px} #w0-2:checked ~ .co-panels .co-p0-2{display:block} #w0-2:checked ~ .co-tabs label[for=w0-2]{color:var(--ink);border-color:var(--coral)} #w0-2:focus-visible ~ .co-tabs label[for=w0-2]{outline:2px solid var(--coral);outline-offset:2px} #w1-0:checked ~ .co-panels .co-p1-0{display:block} #w1-0:checked ~ .co-tabs label[for=w1-0]{color:var(--ink);border-color:var(--coral)} #w1-0:focus-visible ~ .co-tabs label[for=w1-0]{outline:2px solid var(--coral);outline-offset:2px} #w1-1:checked ~ .co-panels .co-p1-1{display:block} #w1-1:checked ~ .co-tabs label[for=w1-1]{color:var(--ink);border-color:var(--coral)} #w1-1:focus-visible ~ .co-tabs label[for=w1-1]{outline:2px solid var(--coral);outline-offset:2px} #w1-2:checked ~ .co-panels .co-p1-2{display:block} #w1-2:checked ~ .co-tabs label[for=w1-2]{color:var(--ink);border-color:var(--coral)} #w1-2:focus-visible ~ .co-tabs label[for=w1-2]{outline:2px solid var(--coral);outline-offset:2px} #w2-0:checked ~ .co-panels .co-p2-0{display:block} #w2-0:checked ~ .co-tabs label[for=w2-0]{color:var(--ink);border-color:var(--coral)} #w2-0:focus-visible ~ .co-tabs label[for=w2-0]{outline:2px solid var(--coral);outline-offset:2px} #w2-1:checked ~ .co-panels .co-p2-1{display:block} #w2-1:checked ~ .co-tabs label[for=w2-1]{color:var(--ink);border-color:var(--coral)} #w2-1:focus-visible ~ .co-tabs label[for=w2-1]{outline:2px solid var(--coral);outline-offset:2px} #w2-2:checked ~ .co-panels .co-p2-2{display:block} #w2-2:checked ~ .co-tabs label[for=w2-2]{color:var(--ink);border-color:var(--coral)} #w2-2:focus-visible ~ .co-tabs label[for=w2-2]{outline:2px solid var(--coral);outline-offset:2px}
+  .co-body{font-family:var(--serif);font-size:18px;line-height:1.7;max-width:60ch;margin:0 auto}
+  .co-kicker{font-family:var(--hand);font-size:28px;color:var(--coral);text-align:center;margin:44px auto;line-height:1.25;max-width:24ch}
+  .co-source{border-top:1px solid var(--stroke);margin-top:44px;padding-top:20px;font-size:14px;color:var(--muted)}
+  .co-source b{color:var(--sub);font-weight:600}
+  .co-shared{max-width:62ch;margin:80px auto 0}
+  .co-shared h2{font-family:var(--hand);font-size:30px;margin:0 0 14px;padding-top:34px;border-top:1px solid var(--stroke)}
+  .co-shared h3{font-family:var(--hand);font-size:24px;margin:40px 0 10px}
+  .co-shared p{font-family:var(--serif);font-size:17px;line-height:1.72;color:var(--sub)}
+  .co-how{max-width:720px;margin:52px auto 0}
+  .co-how h3{font-family:var(--hand);font-size:26px;margin:0 0 4px;text-align:center}
+  .co-flowlead{text-align:center;color:var(--muted);font-size:14px;margin:0 0 22px}
+  .co-flow{display:flex;align-items:stretch;justify-content:center;gap:0;flex-wrap:nowrap}
+  .co-step{flex:1 1 0;min-width:0;max-width:172px;background:var(--paper);border:1.5px solid var(--stroke);border-radius:13px;padding:15px 11px;text-align:center;box-shadow:2px 3px 0 rgba(231,223,203,.5)}
+  .co-step-t{font-family:var(--hand);font-size:16px;color:var(--ink);line-height:1.2}
+  .co-step-s{font-size:11.5px;color:var(--muted);margin-top:8px;line-height:1.35}
+  .co-arrow{display:flex;align-items:center;justify-content:center;color:var(--coral);font-size:20px;font-family:var(--hand);padding:0 5px;flex:0 0 auto}
+  @media(max-width:600px){.co-flow{flex-direction:column;align-items:center} .co-arrow{transform:rotate(90deg);padding:6px 0} .co-step{max-width:300px;width:100%}}
+  .co-foot{margin-top:70px;padding:26px 24px;border-top:1px solid var(--stroke);display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;color:var(--floor);font-size:13px}
+  .co-foot a{color:var(--muted);text-decoration:none} .co-foot a:hover{color:var(--coral)}
+  .co-uc{position:fixed;left:50%;bottom:26px;transform:translateX(-50%) translateY(20px);background:var(--ink);color:var(--paper);
+    padding:10px 20px;border-radius:24px;font-size:14px;opacity:0;pointer-events:none;transition:opacity .2s,transform .2s;z-index:200}
+  .co-uc.show{opacity:1;transform:translateX(-50%) translateY(0)}
+  .co-src-link{color:var(--coral);text-decoration:none;white-space:nowrap}
+  .co-src-link:hover{text-decoration:underline}
+  /* keyboard focus — visible for everyone who tabs */
+  a:focus-visible, summary:focus-visible, .co-tab:focus-visible{outline:2px solid var(--coral);outline-offset:3px;border-radius:6px}
+  @media(max-width:560px){ h1{font-size:40px} .co-idea{font-size:20px} .co-kicker{font-size:24px} }
+  @media(prefers-reduced-motion:reduce){ *{scroll-behavior:auto!important} .co-tab,.co-uc,.co-navlinks>a{transition:none} }
+</style></head>
 <body>
-  <h1 class="brand">Napkin Solo</h1>
-  <svg class="underline" viewBox="0 0 188 13" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" aria-hidden="true">
-    <path d="M4 8 C 40 3, 72 11, 108 6 S 170 4, 184 7"/>
-  </svg>
-  <p class="tag">Two little tools for a curious mind. Pick a door.</p>
-
-  <div class="cards">
-    <a class="card live" href="./dojo/">
-      <svg class="icon" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-        <path d="M7 19 C 22 13, 42 13, 57 19"/>
-        <path d="M9 26 L 55 26"/>
-        <path d="M16 26 L 15 54"/>
-        <path d="M48 26 L 49 54"/>
-        <path d="M16 36 L 48 36"/>
-      </svg>
-      <div class="ctext">
-        <div class="name">Dōjō</div>
-        <div class="desc">Learn anything, one card at a time</div>
+<nav class="co-nav">
+  <a class="co-brand" href="#top">Napkin&nbsp;Solo <span>complex ideas, made simple</span></a>
+  <div class="co-navlinks">
+    <details class="co-dd"><summary>Concepts</summary>
+      <div class="co-dd-menu">
+        <a class="co-dd-item co-dd-cur" data-cid="choice-overload" href="#top" onclick="showConcept(this.dataset.cid);return false">Choice overload</a><a class="co-dd-item" data-cid="subtraction" href="#top" onclick="showConcept(this.dataset.cid);return false">The subtraction blind spot</a><a class="co-dd-item" data-cid="scarcity" href="#top" onclick="showConcept(this.dataset.cid);return false">Scarcity captures the mind</a>
+        <div class="co-dd-sub">More</div>
+        <a class="co-dd-soon" onclick="uc('Search');return false">Search <em>soon</em></a>
+        <a class="co-dd-soon" onclick="uc('Browse the full canon');return false">Browse all 100+ <em>soon</em></a>
       </div>
-      <div class="end">→</div>
-    </a>
-
-    <div class="card soon" aria-disabled="true">
-      <svg class="icon" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-        <path d="M14 12 L 50 12 L 50 48 L 38 48 L 32 54 L 26 48 L 14 48 Z"/>
-        <path d="M22 24 L 42 24 M22 32 L 38 32"/>
-        <path d="M40 44 L 54 30 L 58 34 L 44 48 Z"/>
-      </svg>
-      <div class="ctext">
-        <div class="name">Napkin Solo</div>
-        <div class="desc">Explain any idea in one sketch</div>
-      </div>
-      <span class="badge">coming soon</span>
-    </div>
+    </details>
+    <a href="#how">How it works</a>
+    <a href="#about">About</a>
   </div>
+</nav>
 
-  <p class="foot">made on a napkin · napkinsolo.ai</p>
-</body>
-</html>
+<div class="co-wrap" id="top">
+  <div class="concepts"><section class="cp" data-cid="choice-overload">
+  <p class="co-eyebrow">behavioral · a concept</p>
+  <h1>Choice overload</h1>
+  <p class="co-idea">Past a point, more options stop freeing people and start stalling them.</p>
+  <div class="co-tags"><span class="co-tag">choice-overload</span><span class="co-tag">decision</span><span class="co-tag">curation</span><span class="co-tag">default-nudge</span></div>
+  <div class="co-tw">
+    <p class="co-lead">one idea, 3 ways to see it →</p>
+    <input class="co-radio" type="radio" name="w0" id="w0-0" checked><input class="co-radio" type="radio" name="w0" id="w0-1"><input class="co-radio" type="radio" name="w0" id="w0-2">
+    <div class="co-tabs"><label class="co-tab" for="w0-0"><b>Jams</b><span>jam tasting tables</span></label><label class="co-tab" for="w0-1"><b>Gates</b><span>turnstile gates</span></label><label class="co-tab" for="w0-2"><b>Clothes</b><span>a crammed wardrobe</span></label></div>
+    <div class="co-panels"><div class="co-panel co-p0-0"><div class="co-stage"><svg id="choice_overload_a_svg__fig-sheena-iyengar-a" viewBox="0 0 680 580" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="choice_overload_a_svg__sia-t choice_overload_a_svg__sia-d">
+<title id="choice_overload_a_svg__sia-t">The Two Jam Tables</title>
+<desc id="choice_overload_a_svg__sia-d">Two tasting tables side by side. The table of twenty-four jams draws a big crowd but few buy; the table of six jams draws a smaller crowd but most buy. Two small bar gauges below show the reversal: more lookers at the big table, far more buyers at the small one.</desc>
+<style>
+#choice_overload_a_svg__fig-sheena-iyengar-a{font-family:'Bradley Hand','Marker Felt','Chalkboard SE','Comic Sans MS',cursive}
+#choice_overload_a_svg__fig-sheena-iyengar-a .paper{fill:#FFFDF6;stroke:#E7DFCB;stroke-width:2}
+#choice_overload_a_svg__fig-sheena-iyengar-a .title{font-size:31px;fill:#2C2A26}
+#choice_overload_a_svg__fig-sheena-iyengar-a .sub{font-size:15.5px;fill:#6f685c}
+#choice_overload_a_svg__fig-sheena-iyengar-a .gl{font-size:13px;fill:#6f685c}
+#choice_overload_a_svg__fig-sheena-iyengar-a .lbl{font-size:15px;fill:#2C2A26}
+#choice_overload_a_svg__fig-sheena-iyengar-a .ink{fill:none;stroke:#2C2A26;stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round}
+#choice_overload_a_svg__fig-sheena-iyengar-a .tab{fill:#f6efdd;stroke:#9a9488;stroke-width:2.4;stroke-linejoin:round}
+#choice_overload_a_svg__fig-sheena-iyengar-a .jar{fill:#fffdf6;stroke:#9a9488;stroke-width:1.8;stroke-linejoin:round}
+#choice_overload_a_svg__fig-sheena-iyengar-a .person{fill:none;stroke:#9a9488;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+#choice_overload_a_svg__fig-sheena-iyengar-a .barbg{fill:#f1ead7;stroke:#cdc5ad;stroke-width:1.6}
+#choice_overload_a_svg__fig-sheena-iyengar-a .barink{fill:#bcb4a0}
+#choice_overload_a_svg__fig-sheena-iyengar-a .barcf{fill:#F4B393;stroke:#C56A40;stroke-width:1.8}
+#choice_overload_a_svg__fig-sheena-iyengar-a .acctx{font-size:14px;fill:#C56A40}
+#choice_overload_a_svg__fig-sheena-iyengar-a .num{font-size:18px;fill:#C56A40}
+#choice_overload_a_svg__fig-sheena-iyengar-a .numg{font-size:18px;fill:#6f685c}
+#choice_overload_a_svg__fig-sheena-iyengar-a .kick{font-size:18px;fill:#C56A40}
+#choice_overload_a_svg__fig-sheena-iyengar-a .divider{fill:none;stroke:#2C2A26;stroke-width:1.4;opacity:.24;stroke-linecap:round}
+</style>
+
+<rect class="paper" x="18" y="18" width="644" height="557" rx="16"/>
+
+<text class="title" x="340" y="54" text-anchor="middle">The Two Jam Tables</text>
+<text class="sub" x="340" y="81" text-anchor="middle">The big table pulls the crowd. The small table makes the sale.</text>
+
+<!-- ===== LEFT: 24 jams, big crowd, few buy ===== -->
+<text class="lbl" x="190" y="128" text-anchor="middle">24 jams</text>
+<!-- jars in rows -->
+<g>
+  <g class="jar"><rect x="96"  y="148" width="13" height="16" rx="2"/></g>
+  <g class="jar"><rect x="116" y="148" width="13" height="16" rx="2"/></g>
+  <g class="jar"><rect x="136" y="148" width="13" height="16" rx="2"/></g>
+  <g class="jar"><rect x="156" y="148" width="13" height="16" rx="2"/></g>
+  <g class="jar"><rect x="176" y="148" width="13" height="16" rx="2"/></g>
+  <g class="jar"><rect x="196" y="148" width="13" height="16" rx="2"/></g>
+  <g class="jar"><rect x="216" y="148" width="13" height="16" rx="2"/></g>
+  <g class="jar"><rect x="236" y="148" width="13" height="16" rx="2"/></g>
+  <g class="jar"><rect x="96"  y="170" width="13" height="16" rx="2"/></g>
+  <g class="jar"><rect x="116" y="170" width="13" height="16" rx="2"/></g>
+  <g class="jar"><rect x="136" y="170" width="13" height="16" rx="2"/></g>
+  <g class="jar"><rect x="156" y="170" width="13" height="16" rx="2"/></g>
+  <g class="jar"><rect x="176" y="170" width="13" height="16" rx="2"/></g>
+  <g class="jar"><rect x="196" y="170" width="13" height="16" rx="2"/></g>
+  <g class="jar"><rect x="216" y="170" width="13" height="16" rx="2"/></g>
+  <g class="jar"><rect x="236" y="170" width="13" height="16" rx="2"/></g>
+  <g class="jar"><rect x="96"  y="192" width="13" height="16" rx="2"/></g>
+  <g class="jar"><rect x="116" y="192" width="13" height="16" rx="2"/></g>
+  <g class="jar"><rect x="136" y="192" width="13" height="16" rx="2"/></g>
+  <g class="jar"><rect x="156" y="192" width="13" height="16" rx="2"/></g>
+  <g class="jar"><rect x="176" y="192" width="13" height="16" rx="2"/></g>
+  <g class="jar"><rect x="196" y="192" width="13" height="16" rx="2"/></g>
+  <g class="jar"><rect x="216" y="192" width="13" height="16" rx="2"/></g>
+  <g class="jar"><rect x="236" y="192" width="13" height="16" rx="2"/></g>
+</g>
+<!-- table line -->
+<path class="ink" d="M 84,214 L 296,214" stroke="#9a9488"/>
+<!-- big crowd (heads), they look but stall -->
+<g class="person">
+  <circle cx="104" cy="246" r="7"/><path d="M 104,253 L 104,272"/>
+  <circle cx="126" cy="252" r="7"/><path d="M 126,259 L 126,278"/>
+  <circle cx="150" cy="244" r="7"/><path d="M 150,251 L 150,270"/>
+  <circle cx="172" cy="253" r="7"/><path d="M 172,260 L 172,279"/>
+  <circle cx="196" cy="245" r="7"/><path d="M 196,252 L 196,271"/>
+  <circle cx="220" cy="252" r="7"/><path d="M 220,259 L 220,278"/>
+  <circle cx="244" cy="246" r="7"/><path d="M 244,253 L 244,272"/>
+  <circle cx="268" cy="253" r="7"/><path d="M 268,260 L 268,279"/>
+</g>
+<text class="gl" x="190" y="302" text-anchor="middle">a crowd gathers…</text>
+
+<!-- ===== RIGHT: 6 jams, smaller crowd, many buy ===== -->
+<text class="lbl" x="490" y="128" text-anchor="middle">6 jams</text>
+<g>
+  <g class="jar"><rect x="436" y="148" width="15" height="18" rx="2"/></g>
+  <g class="jar"><rect x="460" y="148" width="15" height="18" rx="2"/></g>
+  <g class="jar"><rect x="484" y="148" width="15" height="18" rx="2"/></g>
+  <g class="jar"><rect x="436" y="172" width="15" height="18" rx="2"/></g>
+  <g class="jar"><rect x="460" y="172" width="15" height="18" rx="2"/></g>
+  <g class="jar"><rect x="484" y="172" width="15" height="18" rx="2"/></g>
+</g>
+<path class="ink" d="M 420,214 L 560,214" stroke="#9a9488"/>
+<!-- smaller crowd, coral = the ones who buy, with a basket tick -->
+<g class="person" stroke="#C56A40">
+  <circle cx="450" cy="248" r="7"/><path d="M 450,255 L 450,274"/>
+  <circle cx="478" cy="252" r="7"/><path d="M 478,259 L 478,278"/>
+  <circle cx="508" cy="248" r="7"/><path d="M 508,255 L 508,274"/>
+</g>
+<!-- little 'bought' jar in hand -->
+<g class="jar" stroke="#C56A40" fill="#F4B393"><rect x="520" y="256" width="12" height="14" rx="2"/></g>
+<text class="acctx" x="490" y="302" text-anchor="middle">…more walk away with a jar</text>
+
+<!-- ===== the reversal: a gauge directly UNDER each table ===== -->
+<text class="gl" x="340" y="336" text-anchor="middle">who actually bought</text>
+
+<!-- under LEFT (24-jam): 3% -->
+<text class="numg" x="122" y="375" text-anchor="end">3%</text>
+<rect class="barbg" x="130" y="360" width="120" height="18" rx="4"/>
+<rect class="barink" x="131" y="361" width="5" height="16" rx="3"/>
+<text class="gl" x="190" y="398" text-anchor="middle">from the 24-jam table</text>
+
+<!-- under RIGHT (6-jam): 30% -->
+<text class="num" x="422" y="375" text-anchor="end">30%</text>
+<rect class="barbg" x="430" y="360" width="120" height="18" rx="4"/>
+<rect class="barcf" x="431" y="361" width="36" height="16" rx="3"/>
+<text class="acctx" x="490" y="398" text-anchor="middle">from the 6-jam table</text>
+
+<text class="kick" x="340" y="462" text-anchor="middle">Faced with too much, most people choose nothing.</text>
+</svg>
+</div><p class="co-cap">Two grocery tasting tables stand side by side. Twenty-four jams pull a thick crowd that lingers and looks; six jams pull a thinner crowd, yet many more leave holding a jar.</p></div><div class="co-panel co-p0-1"><div class="co-stage"><svg id="choice_overload_b_svg__fig-sheena-iyengar-b" viewBox="0 0 680 580" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="choice_overload_b_svg__sib-t choice_overload_b_svg__sib-d">
+<title id="choice_overload_b_svg__sib-t">More Gates, Fewer Through</title>
+<desc id="choice_overload_b_svg__sib-d">Two entrances. A wide bank of many turnstiles where a crowd piles up, hesitates between gates and turns back. Beside it, one open gate through which people flow steadily inside.</desc>
+<style>
+#choice_overload_b_svg__fig-sheena-iyengar-b{font-family:'Bradley Hand','Marker Felt','Chalkboard SE','Comic Sans MS',cursive}
+#choice_overload_b_svg__fig-sheena-iyengar-b .paper{fill:#FFFDF6;stroke:#E7DFCB;stroke-width:2}
+#choice_overload_b_svg__fig-sheena-iyengar-b .title{font-size:31px;fill:#2C2A26}
+#choice_overload_b_svg__fig-sheena-iyengar-b .sub{font-size:15.5px;fill:#6f685c}
+#choice_overload_b_svg__fig-sheena-iyengar-b .gl{font-size:13px;fill:#6f685c}
+#choice_overload_b_svg__fig-sheena-iyengar-b .lbl{font-size:15px;fill:#2C2A26}
+#choice_overload_b_svg__fig-sheena-iyengar-b .gate{fill:none;stroke:#9a9488;stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round}
+#choice_overload_b_svg__fig-sheena-iyengar-b .gatec{fill:none;stroke:#C56A40;stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
+#choice_overload_b_svg__fig-sheena-iyengar-b .head{fill:#f6efdd;stroke:#9a9488;stroke-width:2.2}
+#choice_overload_b_svg__fig-sheena-iyengar-b .headc{fill:#F4B393;stroke:#C56A40;stroke-width:2.2}
+#choice_overload_b_svg__fig-sheena-iyengar-b .flow{fill:none;stroke:#9a9488;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+#choice_overload_b_svg__fig-sheena-iyengar-b .flowc{fill:none;stroke:#C56A40;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
+#choice_overload_b_svg__fig-sheena-iyengar-b .acctx{font-size:14px;fill:#C56A40}
+#choice_overload_b_svg__fig-sheena-iyengar-b .kick{font-size:18px;fill:#C56A40}
+#choice_overload_b_svg__fig-sheena-iyengar-b .divider{fill:none;stroke:#2C2A26;stroke-width:1.4;opacity:.24;stroke-linecap:round}
+</style>
+
+<rect class="paper" x="18" y="18" width="644" height="557" rx="16"/>
+
+<text class="title" x="340" y="54" text-anchor="middle">More Gates, Fewer Through</text>
+<text class="sub" x="340" y="81" text-anchor="middle">Open every gate and the crowd jams. Open one and they flow.</text>
+
+<defs>
+<marker id="choice_overload_b_svg__sib-ag" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="4.3" markerHeight="4.3" orient="auto-start-reverse"><path d="M0,1 L10,5 L0,9 L2.6,5 z" fill="#9a9488"/></marker>
+<marker id="choice_overload_b_svg__sib-ac" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="4.5" markerHeight="4.5" orient="auto-start-reverse"><path d="M0,1 L10,5 L0,9 L2.6,5 z" fill="#C56A40"/></marker>
+</defs>
+
+<!-- ===== LEFT: a wall of gates ===== -->
+<text class="lbl" x="190" y="128" text-anchor="middle">many gates</text>
+<!-- the gate wall (top bar + many posts) -->
+<path class="gate" d="M 86,160 L 296,160"/>
+<g class="gate">
+  <path d="M 96,160 L 96,210"/>
+  <path d="M 124,160 L 124,210"/>
+  <path d="M 152,160 L 152,210"/>
+  <path d="M 180,160 L 180,210"/>
+  <path d="M 208,160 L 208,210"/>
+  <path d="M 236,160 L 236,210"/>
+  <path d="M 264,160 L 264,210"/>
+  <path d="M 286,160 L 286,210"/>
+</g>
+<!-- crowd piled up below, hesitating between lanes -->
+<g>
+  <circle class="head" cx="108" cy="252" r="8"/>
+  <circle class="head" cx="134" cy="266" r="8"/>
+  <circle class="head" cx="160" cy="250" r="8"/>
+  <circle class="head" cx="186" cy="268" r="8"/>
+  <circle class="head" cx="212" cy="252" r="8"/>
+  <circle class="head" cx="238" cy="266" r="8"/>
+  <circle class="head" cx="262" cy="252" r="8"/>
+  <circle class="head" cx="146" cy="288" r="8"/>
+  <circle class="head" cx="200" cy="288" r="8"/>
+  <circle class="head" cx="118" cy="290" r="8"/>
+  <circle class="head" cx="226" cy="290" r="8"/>
+</g>
+<!-- they turn back: two hooked arrows away from the gates -->
+<path class="flow" d="M 138,308 Q 110,322 92,304" marker-end="url(#choice_overload_b_svg__sib-ag)"/>
+<path class="flow" d="M 244,308 Q 272,322 290,304" marker-end="url(#choice_overload_b_svg__sib-ag)"/>
+<text class="gl" x="190" y="338" text-anchor="middle">they pile up, hesitate… and turn back</text>
+
+<!-- ===== RIGHT: one open gate ===== -->
+<text class="lbl" x="490" y="128" text-anchor="middle">one gate</text>
+<path class="gatec" d="M 444,160 L 444,210"/>
+<path class="gatec" d="M 536,160 L 536,210"/>
+<path class="gatec" d="M 444,160 L 536,160"/>
+<!-- steady single-file flow straight through and inside -->
+<g>
+  <circle class="headc" cx="490" cy="258" r="8"/>
+  <circle class="headc" cx="490" cy="288" r="8"/>
+  <circle class="head"  cx="490" cy="318" r="8"/>
+</g>
+<path class="flowc" d="M 490,232 L 490,190" marker-end="url(#choice_overload_b_svg__sib-ac)"/>
+<text class="acctx" x="490" y="346" text-anchor="middle">one clear way in — and they take it</text>
+
+<text class="kick" x="340" y="402" text-anchor="middle">The wider the entrance, the more people stay outside.</text>
+</svg>
+</div><p class="co-cap">At a wall of turnstiles the crowd bunches between lanes, weighs which to pick, and drifts back out. Where a single gate stands open, the same people walk straight through in a calm single file.</p></div><div class="co-panel co-p0-2"><div class="co-stage"><svg id="choice_overload_c_svg__fig-iyengar-wardrobe" viewBox="0 0 680 580" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="choice_overload_c_svg__iw-t choice_overload_c_svg__iw-d">
+<title id="choice_overload_c_svg__iw-t">Nothing to Wear</title>
+<desc id="choice_overload_c_svg__iw-d">Two clothes rods. A jam-packed rod under which a person stands stuck, thinking "nothing to wear." Beside it a sparse rod of a few well-spaced pieces, one already pulled out and worn, the person moving.</desc>
+<style>
+#choice_overload_c_svg__fig-iyengar-wardrobe{font-family:'Bradley Hand','Marker Felt','Chalkboard SE','Comic Sans MS',cursive}
+#choice_overload_c_svg__fig-iyengar-wardrobe .paper{fill:#FFFDF6;stroke:#E7DFCB;stroke-width:2}
+#choice_overload_c_svg__fig-iyengar-wardrobe .title{font-size:31px;fill:#2C2A26}
+#choice_overload_c_svg__fig-iyengar-wardrobe .sub{font-size:15.5px;fill:#6f685c}
+#choice_overload_c_svg__fig-iyengar-wardrobe .gl{font-size:13px;fill:#6f685c}
+#choice_overload_c_svg__fig-iyengar-wardrobe .lbl{font-size:15px;fill:#2C2A26}
+#choice_overload_c_svg__fig-iyengar-wardrobe .rod{fill:none;stroke:#9a9488;stroke-width:2.8;stroke-linecap:round}
+#choice_overload_c_svg__fig-iyengar-wardrobe .rodc{fill:none;stroke:#C56A40;stroke-width:3;stroke-linecap:round}
+#choice_overload_c_svg__fig-iyengar-wardrobe .hang{fill:#f6efdd;stroke:#9a9488;stroke-width:2.1;stroke-linejoin:round}
+#choice_overload_c_svg__fig-iyengar-wardrobe .hangc{fill:#F4B393;stroke:#C56A40;stroke-width:2.2;stroke-linejoin:round}
+#choice_overload_c_svg__fig-iyengar-wardrobe .hk{fill:none;stroke:#9a9488;stroke-width:1.8;stroke-linecap:round}
+#choice_overload_c_svg__fig-iyengar-wardrobe .hkc{fill:none;stroke:#C56A40;stroke-width:2;stroke-linecap:round}
+#choice_overload_c_svg__fig-iyengar-wardrobe .fig{fill:none;stroke:#2C2A26;stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round}
+#choice_overload_c_svg__fig-iyengar-wardrobe .figc{fill:none;stroke:#C56A40;stroke-width:2.8;stroke-linecap:round;stroke-linejoin:round}
+#choice_overload_c_svg__fig-iyengar-wardrobe .bub{fill:#FFFDF6;stroke:#6f685c;stroke-width:2}
+#choice_overload_c_svg__fig-iyengar-wardrobe .bubtx{font-size:13.5px;fill:#6f685c}
+#choice_overload_c_svg__fig-iyengar-wardrobe .acctx{font-size:14px;fill:#C56A40}
+#choice_overload_c_svg__fig-iyengar-wardrobe .kick{font-size:18px;fill:#C56A40}
+#choice_overload_c_svg__fig-iyengar-wardrobe .divider{fill:none;stroke:#2C2A26;stroke-width:1.4;opacity:.24;stroke-linecap:round}
+</style>
+
+<rect class="paper" x="18" y="18" width="644" height="557" rx="16"/>
+
+<text class="title" x="340" y="54" text-anchor="middle">Nothing to Wear</text>
+<text class="sub" x="340" y="81" text-anchor="middle">A fuller closet, fewer decisions made. A curated few gets worn.</text>
+
+<defs>
+<marker id="choice_overload_c_svg__iw-ac" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="4.5" markerHeight="4.5" orient="auto-start-reverse"><path d="M0,1 L10,5 L0,9 L2.6,5 z" fill="#C56A40"/></marker>
+</defs>
+
+<!-- ===== LEFT: the jam-packed rod ===== -->
+<text class="lbl" x="184" y="128" text-anchor="middle">too many</text>
+
+<!-- rod -->
+<path class="rod" d="M 84,158 L 290,158"/>
+<!-- a dense wall of hangers, crammed shoulder to shoulder -->
+<g>
+  <g transform="translate(96,158)"><path class="hk" d="M 0,0 L 0,-7 Q 3,-12 6,-7"/><path class="hang" d="M -10,18 L 0,4 L 10,18 L 8,40 L -8,40 Z"/></g>
+  <g transform="translate(110,158)"><path class="hk" d="M 0,0 L 0,-7 Q 3,-12 6,-7"/><path class="hang" d="M -10,18 L 0,4 L 10,18 L 8,42 L -8,42 Z"/></g>
+  <g transform="translate(124,158)"><path class="hk" d="M 0,0 L 0,-7 Q 3,-12 6,-7"/><path class="hang" d="M -10,18 L 0,4 L 10,18 L 8,39 L -8,39 Z"/></g>
+  <g transform="translate(138,158)"><path class="hk" d="M 0,0 L 0,-7 Q 3,-12 6,-7"/><path class="hang" d="M -10,18 L 0,4 L 10,18 L 8,43 L -8,43 Z"/></g>
+  <g transform="translate(152,158)"><path class="hk" d="M 0,0 L 0,-7 Q 3,-12 6,-7"/><path class="hang" d="M -10,18 L 0,4 L 10,18 L 8,40 L -8,40 Z"/></g>
+  <g transform="translate(166,158)"><path class="hk" d="M 0,0 L 0,-7 Q 3,-12 6,-7"/><path class="hang" d="M -10,18 L 0,4 L 10,18 L 8,44 L -8,44 Z"/></g>
+  <g transform="translate(180,158)"><path class="hk" d="M 0,0 L 0,-7 Q 3,-12 6,-7"/><path class="hang" d="M -10,18 L 0,4 L 10,18 L 8,38 L -8,38 Z"/></g>
+  <g transform="translate(194,158)"><path class="hk" d="M 0,0 L 0,-7 Q 3,-12 6,-7"/><path class="hang" d="M -10,18 L 0,4 L 10,18 L 8,42 L -8,42 Z"/></g>
+  <g transform="translate(208,158)"><path class="hk" d="M 0,0 L 0,-7 Q 3,-12 6,-7"/><path class="hang" d="M -10,18 L 0,4 L 10,18 L 8,40 L -8,40 Z"/></g>
+  <g transform="translate(222,158)"><path class="hk" d="M 0,0 L 0,-7 Q 3,-12 6,-7"/><path class="hang" d="M -10,18 L 0,4 L 10,18 L 8,43 L -8,43 Z"/></g>
+  <g transform="translate(236,158)"><path class="hk" d="M 0,0 L 0,-7 Q 3,-12 6,-7"/><path class="hang" d="M -10,18 L 0,4 L 10,18 L 8,39 L -8,39 Z"/></g>
+  <g transform="translate(250,158)"><path class="hk" d="M 0,0 L 0,-7 Q 3,-12 6,-7"/><path class="hang" d="M -10,18 L 0,4 L 10,18 L 8,42 L -8,42 Z"/></g>
+  <g transform="translate(264,158)"><path class="hk" d="M 0,0 L 0,-7 Q 3,-12 6,-7"/><path class="hang" d="M -10,18 L 0,4 L 10,18 L 8,40 L -8,40 Z"/></g>
+  <g transform="translate(278,158)"><path class="hk" d="M 0,0 L 0,-7 Q 3,-12 6,-7"/><path class="hang" d="M -10,18 L 0,4 L 10,18 L 8,41 L -8,41 Z"/></g>
+</g>
+
+<!-- person standing stuck below, arms down -->
+<g><path d="M 184.3,275.3 Q 173.8,285.6 178.8,296 L 195.3,296 Q 200.3,285.6 189.8,275.3 Z" fill="#f6efdd" stroke="#3a322c" stroke-width="2.4" stroke-linejoin="round"/><path d="M 179.9,275.3 Q 177.4,282.1 177.4,289.3 Q 183.7,291.6 188.8,295.9" fill="none" stroke="#3a322c" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M 194.2,275.3 Q 197.8,281.5 203.3,286.2 Q 203.3,279.5 205.6,273.2" fill="none" stroke="#3a322c" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M 181.5,296 Q 179.7,304.1 180.3,312.5 Q 181.4,320.7 180.1,329" fill="none" stroke="#3a322c" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M 192.5,296 Q 191.9,304.3 193.7,312.5 Q 195,320.7 193.9,329" fill="none" stroke="#3a322c" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/><ellipse cx="184.1" cy="261.7" rx="8.7" ry="10.6" fill="#fffdf6" stroke="#3a322c" stroke-width="2.4"/><circle cx="181" cy="260.4" r="1.3" fill="#3a322c"/><circle cx="187.3" cy="260.4" r="1.3" fill="#3a322c"/></g>
+<!-- thought bubble: nothing to wear -->
+<g>
+  <ellipse class="bub" cx="248" cy="252" rx="48" ry="20"/>
+  <circle class="bub" cx="216" cy="270" r="3.6"/>
+  <circle class="bub" cx="208" cy="280" r="2.4"/>
+  <text class="bubtx" x="248" y="257" text-anchor="middle">nothing to wear!</text>
+</g>
+<text class="gl" x="184" y="358" text-anchor="middle">stuck — and stays in the old clothes</text>
+
+<!-- ===== RIGHT: the curated few ===== -->
+<text class="lbl" x="498" y="128" text-anchor="middle">a curated few</text>
+
+<!-- rod -->
+<path class="rodc" d="M 414,158 L 584,158"/>
+<!-- a few well-spaced pieces (coral) — one gap where one was taken -->
+<g>
+  <g transform="translate(432,158)"><path class="hkc" d="M 0,0 L 0,-7 Q 3,-12 6,-7"/><path class="hangc" d="M -12,20 L 0,4 L 12,20 L 9,46 L -9,46 Z"/></g>
+  <g transform="translate(472,158)"><path class="hkc" d="M 0,0 L 0,-7 Q 3,-12 6,-7"/><path class="hangc" d="M -12,20 L 0,4 L 12,20 L 9,46 L -9,46 Z"/></g>
+  <!-- gap at ~512: the one that got picked -->
+  <g transform="translate(552,158)"><path class="hkc" d="M 0,0 L 0,-7 Q 3,-12 6,-7"/><path class="hangc" d="M -12,20 L 0,4 L 12,20 L 9,46 L -9,46 Z"/></g>
+</g>
+<!-- empty hook where the chosen piece was -->
+<path class="hkc" d="M 512,158 L 512,151 Q 515,146 518,151"/>
+
+<!-- person walking off, wearing the chosen piece (coral top) -->
+<g><path d="M 498.7,279.3 Q 486.8,289.7 491.8,300 L 508.3,300 Q 513.3,289.7 504.2,279.3 Z" fill="#f6efdd" stroke="#d8513b" stroke-width="2.4" stroke-linejoin="round"/><path d="M 494.3,279.3 Q 494.6,286.5 497.3,293.3 Q 500.5,299.2 501.3,305.8" fill="none" stroke="#d8513b" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M 508.6,279.3 Q 505.9,286 505.6,293.3 Q 504.7,299.9 501.5,305.8" fill="none" stroke="#d8513b" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M 494.5,300 Q 490.8,307.5 489.4,315.7 Q 486.6,323.5 481.7,330.3" fill="none" stroke="#d8513b" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M 505.5,300 Q 506.9,308.2 510.6,315.7 Q 513.5,323.5 514,331.8" fill="none" stroke="#d8513b" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/><ellipse cx="502.4" cy="265.5" rx="8.7" ry="10.6" fill="#fffdf6" stroke="#d8513b" stroke-width="2.4"/><circle cx="499.2" cy="264.2" r="1.3" fill="#d8513b"/><circle cx="505.6" cy="264.2" r="1.3" fill="#d8513b"/></g>
+<!-- motion arrow: they move -->
+<path class="rodc" d="M 540,300 L 575,300" marker-end="url(#choice_overload_c_svg__iw-ac)" stroke-width="1.9"/>
+<text class="acctx" x="498" y="358" text-anchor="middle">picks one — and walks out the door</text>
+
+<text class="kick" x="340" y="406" text-anchor="middle">More to choose from, less actually chosen.</text>
+</svg>
+</div><p class="co-cap">Under a rail crammed with hangers, someone stands stuck — nothing to wear. Beside it, a curated few, and an outfit chosen in a moment.</p></div></div>
+  </div>
+  <p class="co-body">One idea, told three ways so it lands for any audience: past a point, more options stall people rather than free them — so curate a clear few and point to a default.</p>
+  <p class="co-kicker">faced with too much, most people choose nothing.</p>
+  <div class="co-source"><b>The research.</b> Iyengar &amp; Lepper (2000) &#x27;When Choice is Demotivating&#x27;, J. Personality &amp; Social Psychology — the jam-tasting field experiment (24 vs 6). </div>
+</section><section class="cp" data-cid="subtraction" hidden>
+  <p class="co-eyebrow">behavioral · a concept</p>
+  <h1>The subtraction blind spot</h1>
+  <p class="co-idea">When we set out to improve something, we reflexively add — and overlook taking away, even when less is the better move.</p>
+  <div class="co-tags"><span class="co-tag">subtraction</span><span class="co-tag">design</span><span class="co-tag">decision</span><span class="co-tag">less-is-more</span></div>
+  <div class="co-tw">
+    <p class="co-lead">one idea, 3 ways to see it →</p>
+    <input class="co-radio" type="radio" name="w1" id="w1-0" checked><input class="co-radio" type="radio" name="w1" id="w1-1"><input class="co-radio" type="radio" name="w1" id="w1-2">
+    <div class="co-tabs"><label class="co-tab" for="w1-0"><b>See-Saw</b><span>a see-saw we keep loading</span></label><label class="co-tab" for="w1-1"><b>Remote</b><span>the forty-button remote</span></label><label class="co-tab" for="w1-2"><b>Prune</b><span>pruning a plant</span></label></div>
+    <div class="co-panels"><div class="co-panel co-p1-0"><div class="co-stage"><svg id="subtraction_a_svg__fig-leidy-klotz-b" viewBox="0 0 680 580" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="subtraction_a_svg__lkb-t subtraction_a_svg__lkb-d">
+<title id="subtraction_a_svg__lkb-t">Pile On, or Lift Off</title>
+<desc id="subtraction_a_svg__lkb-d">A tilted see-saw. On the high side, a busy stack of weights is being added to level it; on the heavy low side, lifting one weight off would do the same job for less. We instinctively pile on rather than lift off. A caption sits inside the same frame below a divider.</desc>
+<style>
+#subtraction_a_svg__fig-leidy-klotz-b{font-family:'Bradley Hand','Marker Felt','Chalkboard SE','Comic Sans MS',cursive}
+#subtraction_a_svg__fig-leidy-klotz-b .paper{fill:#FFFDF6;stroke:#E7DFCB;stroke-width:2}
+#subtraction_a_svg__fig-leidy-klotz-b .title{font-size:31px;fill:#2C2A26}
+#subtraction_a_svg__fig-leidy-klotz-b .sub{font-size:15.5px;fill:#6f685c}
+#subtraction_a_svg__fig-leidy-klotz-b .gl{font-size:14px;fill:#6f685c}
+#subtraction_a_svg__fig-leidy-klotz-b .ink{fill:none;stroke:#2C2A26;stroke-width:3.2;stroke-linecap:round;stroke-linejoin:round}
+#subtraction_a_svg__fig-leidy-klotz-b .wt{fill:#f6efdd;stroke:#2C2A26;stroke-width:2.8;stroke-linejoin:round}
+#subtraction_a_svg__fig-leidy-klotz-b .accbl{fill:#F4B393;stroke:#C56A40;stroke-width:2.8;stroke-linejoin:round}
+#subtraction_a_svg__fig-leidy-klotz-b .acc{fill:none;stroke:#C56A40;stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
+#subtraction_a_svg__fig-leidy-klotz-b .acctx{font-size:14px;fill:#C56A40}
+#subtraction_a_svg__fig-leidy-klotz-b .ghost{fill:none;stroke:#bcb6a6;stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round}
+#subtraction_a_svg__fig-leidy-klotz-b .gtx{font-size:13.5px;fill:#6f685c}
+#subtraction_a_svg__fig-leidy-klotz-b .kick{font-size:18px;fill:#C56A40}
+#subtraction_a_svg__fig-leidy-klotz-b .divider{fill:none;stroke:#2C2A26;stroke-width:1.4;opacity:.24;stroke-linecap:round}
+</style>
+
+<rect class="paper" x="18" y="18" width="644" height="557" rx="16"/>
+
+<text class="title" x="340" y="54" text-anchor="middle">Pile On, or Lift Off</text>
+<text class="sub" x="340" y="81" text-anchor="middle">To level a tilted scale, we add weight to the light side — never lift it off the heavy one.</text>
+
+<defs>
+<marker id="subtraction_a_svg__lkb-ac" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="4.3" markerHeight="4.3" orient="auto-start-reverse"><path d="M0,1 L10,5 L0,9 L2.6,5 z" fill="#C56A40"/></marker>
+<marker id="subtraction_a_svg__lkb-ag" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="4.3" markerHeight="4.3" orient="auto-start-reverse"><path d="M0,1 L10,5 L0,9 L2.6,5 z" fill="#bcb6a6"/></marker>
+</defs>
+
+<!-- fulcrum -->
+<path class="ink" d="M 340,420 L 300,470 L 380,470 Z" fill="#f6efdd"/>
+
+<!-- tilted beam: low on the left (heavy), high on the right (light) -->
+<g transform="rotate(-13 340 412)">
+<path class="ink" d="M 150,412 L 530,412" stroke-width="5"/>
+<!-- left pan (heavy / low) -->
+<path class="ink" d="M 178,412 L 162,448 M 178,412 L 214,448" stroke-width="2.4"/>
+<path class="ink" d="M 158,450 Q 188,462 220,450" stroke-width="2.6"/>
+<!-- right pan (light / high) -->
+<path class="ink" d="M 502,412 L 486,448 M 502,412 L 538,448" stroke-width="2.4"/>
+<path class="ink" d="M 482,450 Q 512,462 544,450" stroke-width="2.6"/>
+</g>
+
+<!-- HEAVY low side: existing stacked weights (grey) + the lift-off move (ghosted) -->
+<g transform="rotate(-13 340 412)">
+<rect class="wt" x="166" y="388" width="44" height="22"/>
+<rect class="wt" x="172" y="368" width="34" height="20"/>
+<rect class="wt" x="178" y="350" width="24" height="18" stroke-dasharray="5 5" fill="#fbf7ec" stroke="#bcb6a6"/>
+</g>
+<path class="ghost" d="M 120,300 Q 150,330 178,352" marker-end="url(#subtraction_a_svg__lkb-ag)"/>
+<text class="gtx" x="110" y="292" text-anchor="middle">lift one off?</text>
+<text class="gtx" x="112" y="312" text-anchor="middle">(the move we skip)</text>
+
+<!-- LIGHT high side: piling on more (coral, the instinct) -->
+<g transform="rotate(-13 340 412)">
+<rect class="accbl" x="494" y="388" width="44" height="22"/>
+</g>
+<g><rect class="accbl" x="556" y="250" width="42" height="22" transform="rotate(-13 577 261)"/></g>
+<path class="acc" d="M 588,238 Q 560,290 532,338" marker-end="url(#subtraction_a_svg__lkb-ac)"/>
+<text class="acctx" x="586" y="226" text-anchor="middle">add more →</text>
+<text class="acctx" x="586" y="246" text-anchor="middle">(what we reach for)</text>
+
+</svg>
+</div><p class="co-cap">A see-saw tips, heavy on one side. Reaching to even it out, we stack new weights onto the light side and never think to lift one off the heavy one.</p></div><div class="co-panel co-p1-1"><div class="co-stage"><svg id="subtraction_b_svg__fig-klotz-remote" viewBox="0 0 680 580" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="subtraction_b_svg__lkr-t subtraction_b_svg__lkr-d">
+<title id="subtraction_b_svg__lkr-t">Two Remotes</title>
+<desc id="subtraction_b_svg__lkr-d">An old TV remote crammed with dozens of tiny buttons sits beside a clean modern remote with only a handful. An arrow between them, labelled "take buttons away", points to the simpler one, which is marked in coral as the better design. A caption sits inside the same frame below a divider.</desc>
+<style>
+#subtraction_b_svg__fig-klotz-remote{font-family:'Bradley Hand','Marker Felt','Chalkboard SE','Comic Sans MS',cursive}
+#subtraction_b_svg__fig-klotz-remote .paper{fill:#FFFDF6;stroke:#E7DFCB;stroke-width:2}
+#subtraction_b_svg__fig-klotz-remote .title{font-size:31px;fill:#2C2A26}
+#subtraction_b_svg__fig-klotz-remote .sub{font-size:15.5px;fill:#6f685c}
+#subtraction_b_svg__fig-klotz-remote .gl{font-size:14px;fill:#6f685c}
+#subtraction_b_svg__fig-klotz-remote .ink{fill:none;stroke:#2C2A26;stroke-width:3.2;stroke-linecap:round;stroke-linejoin:round}
+#subtraction_b_svg__fig-klotz-remote .body{fill:#f6efdd;stroke:#2C2A26;stroke-width:3.2;stroke-linejoin:round}
+#subtraction_b_svg__fig-klotz-remote .btn{fill:none;stroke:#2C2A26;stroke-width:2}
+#subtraction_b_svg__fig-klotz-remote .bodyc{fill:#FFFDF6;stroke:#C56A40;stroke-width:3.4;stroke-linejoin:round}
+#subtraction_b_svg__fig-klotz-remote .btnc{fill:#F4B393;stroke:#C56A40;stroke-width:2.4}
+#subtraction_b_svg__fig-klotz-remote .acc{fill:none;stroke:#C56A40;stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
+#subtraction_b_svg__fig-klotz-remote .acctx{font-size:14px;fill:#C56A40}
+#subtraction_b_svg__fig-klotz-remote .cf{fill:#F4B393;stroke:#C56A40;stroke-width:2.4;stroke-linejoin:round}
+#subtraction_b_svg__fig-klotz-remote .kick{font-size:18px;fill:#C56A40}
+#subtraction_b_svg__fig-klotz-remote .divider{fill:none;stroke:#2C2A26;stroke-width:1.4;opacity:.24;stroke-linecap:round}
+</style>
+
+<rect class="paper" x="18" y="18" width="644" height="557" rx="16"/>
+
+<text class="title" x="340" y="54" text-anchor="middle">Two Remotes</text>
+<text class="sub" x="340" y="81" text-anchor="middle">The better design wasn’t more buttons. It was taking most of them away.</text>
+
+<defs>
+<marker id="subtraction_b_svg__lkr-ac" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="4.3" markerHeight="4.3" orient="auto-start-reverse"><path d="M0,1 L10,5 L0,9 L2.6,5 z" fill="#C56A40"/></marker>
+</defs>
+
+<!-- ===================== OLD REMOTE — crammed (grey ink) ===================== -->
+<g transform="rotate(-4 178 300)">
+<rect class="body" x="132" y="150" width="92" height="300" rx="18"/>
+<!-- power dot up top -->
+<circle class="btn" cx="178" cy="176" r="6"/>
+<!-- a dense thicket of tiny buttons: rows of small rounded rects -->
+<!-- numeric pad block -->
+<g class="btn">
+<rect x="146" y="196" width="16" height="11" rx="3"/><rect x="170" y="196" width="16" height="11" rx="3"/><rect x="194" y="196" width="16" height="11" rx="3"/>
+<rect x="146" y="212" width="16" height="11" rx="3"/><rect x="170" y="212" width="16" height="11" rx="3"/><rect x="194" y="212" width="16" height="11" rx="3"/>
+<rect x="146" y="228" width="16" height="11" rx="3"/><rect x="170" y="228" width="16" height="11" rx="3"/><rect x="194" y="228" width="16" height="11" rx="3"/>
+<rect x="146" y="244" width="16" height="11" rx="3"/><rect x="170" y="244" width="16" height="11" rx="3"/><rect x="194" y="244" width="16" height="11" rx="3"/>
+</g>
+<!-- a directional cluster -->
+<circle class="btn" cx="178" cy="290" r="20"/>
+<circle class="btn" cx="178" cy="290" r="7"/>
+<!-- side function buttons -->
+<g class="btn">
+<rect x="146" y="326" width="16" height="11" rx="3"/><rect x="194" y="326" width="16" height="11" rx="3"/>
+<rect x="146" y="342" width="16" height="11" rx="3"/><rect x="194" y="342" width="16" height="11" rx="3"/>
+</g>
+<!-- vol / chan rockers -->
+<g class="btn">
+<rect x="146" y="364" width="18" height="34" rx="9"/><rect x="192" y="364" width="18" height="34" rx="9"/>
+</g>
+<!-- bottom tiny grid -->
+<g class="btn">
+<rect x="148" y="410" width="13" height="9" rx="2.5"/><rect x="166" y="410" width="13" height="9" rx="2.5"/><rect x="184" y="410" width="13" height="9" rx="2.5"/>
+<rect x="148" y="424" width="13" height="9" rx="2.5"/><rect x="166" y="424" width="13" height="9" rx="2.5"/><rect x="184" y="424" width="13" height="9" rx="2.5"/>
+</g>
+</g>
+<text class="gl" x="178" y="478" text-anchor="middle">forty-odd buttons</text>
+
+<!-- ===================== the subtraction arrow ===================== -->
+<path class="acc" d="M 272,300 L 384,300" marker-end="url(#subtraction_b_svg__lkr-ac)"/>
+<text class="acctx" x="328" y="282" text-anchor="middle">take buttons away</text>
+
+<!-- ===================== NEW REMOTE — calm (coral winner) ===================== -->
+<g transform="rotate(3 502 300)">
+<rect class="bodyc" x="468" y="190" width="68" height="220" rx="26"/>
+<!-- one big clean ring (the pad) -->
+<circle cx="502" cy="252" r="26" fill="none" stroke="#C56A40" stroke-width="2.6"/>
+<circle class="btnc" cx="502" cy="252" r="9"/>
+<!-- a couple of small buttons, lots of space -->
+<rect class="btnc" x="490" y="316" width="24" height="12" rx="6"/>
+<rect class="btnc" x="490" y="344" width="24" height="12" rx="6"/>
+</g>
+<!-- the coral seal-of-approval ring -->
+<circle cx="566" cy="206" r="17" fill="none" stroke="#C56A40" stroke-width="3"/>
+<path class="acc" d="M 558,206 L 564,214 L 576,199" stroke-width="3.4"/>
+<text class="acctx" x="502" y="478" text-anchor="middle">a handful</text>
+
+</svg>
+</div><p class="co-cap">The old remote bristles with forty-odd buttons; the redesign keeps a quiet handful. The win came from deleting, not designing more.</p></div><div class="co-panel co-p1-2"><div class="co-stage"><svg id="subtraction_c_svg__fig-leidy-klotz-prune" viewBox="0 0 680 580" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="subtraction_c_svg__lkp-t subtraction_c_svg__lkp-d">
+<title id="subtraction_c_svg__lkp-t">Cut Back to Grow</title>
+<desc id="subtraction_c_svg__lkp-d">A potted plant whose branch has been snipped off; from the fresh coral cut, vigorous new shoots and fruit burst out — far more growth than was removed. Taking away is what makes it flourish. A caption sits inside the same frame below a divider.</desc>
+<style>
+#subtraction_c_svg__fig-leidy-klotz-prune{font-family:'Bradley Hand','Marker Felt','Chalkboard SE','Comic Sans MS',cursive}
+#subtraction_c_svg__fig-leidy-klotz-prune .paper{fill:#FFFDF6;stroke:#E7DFCB;stroke-width:2}
+#subtraction_c_svg__fig-leidy-klotz-prune .title{font-size:31px;fill:#2C2A26}
+#subtraction_c_svg__fig-leidy-klotz-prune .sub{font-size:15.5px;fill:#6f685c}
+#subtraction_c_svg__fig-leidy-klotz-prune .ink{fill:none;stroke:#2C2A26;stroke-width:3.4;stroke-linecap:round;stroke-linejoin:round}
+#subtraction_c_svg__fig-leidy-klotz-prune .leaf{fill:#f6efdd;stroke:#2C2A26;stroke-width:2.8;stroke-linejoin:round}
+#subtraction_c_svg__fig-leidy-klotz-prune .pot{fill:#f6efdd;stroke:#2C2A26;stroke-width:3.2;stroke-linejoin:round}
+#subtraction_c_svg__fig-leidy-klotz-prune .ghost{fill:none;stroke:#cfc8b6;stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
+#subtraction_c_svg__fig-leidy-klotz-prune .ghostleaf{fill:none;stroke:#cfc8b6;stroke-width:2.6;stroke-linejoin:round}
+#subtraction_c_svg__fig-leidy-klotz-prune .gtx{font-size:13.5px;fill:#6f685c}
+#subtraction_c_svg__fig-leidy-klotz-prune .acc{fill:none;stroke:#C56A40;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+#subtraction_c_svg__fig-leidy-klotz-prune .accleaf{fill:#F4B393;stroke:#C56A40;stroke-width:2.8;stroke-linejoin:round}
+#subtraction_c_svg__fig-leidy-klotz-prune .accfruit{fill:#F4B393;stroke:#C56A40;stroke-width:2.6}
+#subtraction_c_svg__fig-leidy-klotz-prune .acctx{font-size:14px;fill:#C56A40}
+#subtraction_c_svg__fig-leidy-klotz-prune .kick{font-size:18px;fill:#C56A40}
+#subtraction_c_svg__fig-leidy-klotz-prune .divider{fill:none;stroke:#2C2A26;stroke-width:1.4;opacity:.24;stroke-linecap:round}
+</style>
+
+<rect class="paper" x="18" y="18" width="644" height="557" rx="16"/>
+
+<text class="title" x="340" y="54" text-anchor="middle">Cut Back to Grow</text>
+<text class="sub" x="340" y="81" text-anchor="middle">Snip a branch away, and the plant answers with more growth, not less.</text>
+
+<defs>
+<marker id="subtraction_c_svg__lkp-ac" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="4.3" markerHeight="4.3" orient="auto-start-reverse"><path d="M0,1 L10,5 L0,9 L2.6,5 z" fill="#C56A40"/></marker>
+<marker id="subtraction_c_svg__lkp-ag" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="4.3" markerHeight="4.3" orient="auto-start-reverse"><path d="M0,1 L10,5 L0,9 L2.6,5 z" fill="#cfc8b6"/></marker>
+</defs>
+
+<!-- pot -->
+<path class="pot" d="M 292,486 L 388,486 L 378,540 L 302,540 Z"/>
+<path class="ink" d="M 286,486 L 394,486" stroke-width="3.2"/>
+
+<!-- main stem rising out of the pot -->
+<path class="ink" d="M 340,486 L 340,360"/>
+
+<!-- LEFT: the branch we cut — shown as a faint ghost stub where it used to be -->
+<path class="ghost" d="M 340,396 Q 296,378 264,344" stroke-dasharray="6 8"/>
+<path class="ghostleaf" d="M 264,344 Q 244,338 236,320 Q 256,322 268,338 Q 268,344 264,344 Z" stroke-dasharray="5 6"/>
+<text class="gtx" x="236" y="306" text-anchor="middle">the branch we cut off</text>
+
+<!-- the SNIP: coral cut-mark across the stem (the one move to emphasise) -->
+<path class="acc" d="M 326,398 L 354,386" stroke-width="2.8"/>
+<!-- two little cut slivers flying off -->
+<path class="acc" d="M 318,382 L 308,376" stroke-width="2.6"/>
+<path class="acc" d="M 320,392 L 309,389" stroke-width="2.6"/>
+<text class="acctx" x="300" y="416" text-anchor="middle">snip</text>
+
+<!-- RIGHT &amp; UP: the NEW GROWTH bursting from the cut (coral) — far more than was lost -->
+<path class="acc" d="M 344,392 Q 360,330 348,278"/>
+<path class="acc" d="M 344,392 Q 396,344 372,288"/>
+<path class="acc" d="M 344,392 Q 404,360 430,310"/>
+<path class="acc" d="M 344,392 Q 388,372 426,360"/>
+<!-- new coral leaves -->
+<path class="accleaf" d="M 348,278 Q 332,266 326,248 Q 346,250 358,270 Q 358,276 348,278 Z"/>
+<path class="accleaf" d="M 372,288 Q 388,272 408,268 Q 400,288 380,296 Q 372,294 372,288 Z"/>
+<!-- new fruit (the reward) -->
+<circle class="accfruit" cx="430" cy="310" r="12"/>
+<path class="acc" d="M 430,298 L 428,290" stroke-width="2.6"/>
+<circle class="accfruit" cx="426" cy="360" r="11"/>
+<path class="acc" d="M 426,349 L 424,342" stroke-width="2.6"/>
+<circle class="accfruit" cx="388" cy="270" r="9"/>
+<path class="acc" d="M 388,261 L 387,255" stroke-width="2.6"/>
+
+<text class="acctx" x="486" y="318" text-anchor="middle">…answers with</text>
+<text class="acctx" x="486" y="338" text-anchor="middle">more growth</text>
+
+</svg>
+</div><p class="co-cap">A gardener cuts one branch from the plant. From the bare wound the plant pushes out fresh shoots and fruit, returning far more than was removed.</p></div></div>
+  </div>
+  <p class="co-body">The same reflex, three ways: when something needs fixing, we pile on more — and miss the fix that removes.</p>
+  <p class="co-kicker">adding comes first. Subtracting is the idea we have to reach for.</p>
+  <div class="co-source"><b>The research.</b> Adams, Converse, Hales &amp; Klotz (2021) &#x27;People Systematically Overlook Subtractive Changes&#x27;, Nature 592 — eight experiments — Lego grids, recipes, essays, schedules. <a class="co-src-link" href="https://www.nature.com/articles/s41586-021-03380-y" target="_blank" rel="noopener">Read the source →</a></div>
+</section><section class="cp" data-cid="scarcity" hidden>
+  <p class="co-eyebrow">behavioral · a concept</p>
+  <h1>Scarcity captures the mind</h1>
+  <p class="co-idea">Having too little doesn&#x27;t only cost you what you lack — it captures your attention and taxes everything else.</p>
+  <div class="co-tags"><span class="co-tag">scarcity</span><span class="co-tag">attention</span><span class="co-tag">bandwidth</span><span class="co-tag">poverty</span><span class="co-tag">focus</span></div>
+  <div class="co-tw">
+    <p class="co-lead">one idea, 3 ways to see it →</p>
+    <input class="co-radio" type="radio" name="w2" id="w2-0" checked><input class="co-radio" type="radio" name="w2" id="w2-1"><input class="co-radio" type="radio" name="w2" id="w2-2">
+    <div class="co-tabs"><label class="co-tab" for="w2-0"><b>Seasons</b><span>the same mind, two seasons</span></label><label class="co-tab" for="w2-1"><b>Glass</b><span>a glass already full</span></label><label class="co-tab" for="w2-2"><b>Tunnel</b><span>a beam that tunnels</span></label></div>
+    <div class="co-panels"><div class="co-panel co-p2-0"><div class="co-stage"><svg id="scarcity_a_svg__fig-ms-seasons" viewBox="0 0 680 470" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="scarcity_a_svg__mss-t scarcity_a_svg__mss-d">
+<title id="scarcity_a_svg__mss-t">The Same Mind, Two Seasons</title>
+<desc id="scarcity_a_svg__mss-d">The same sugarcane farmer's mind shown twice. Poor before the harvest, the mind is crowded and the IQ score is about thirteen points lower. Flush after the harvest, the mind is clear and the score returns to the person's own normal.</desc>
+<style>
+#scarcity_a_svg__fig-ms-seasons{font-family:'Bradley Hand','Marker Felt','Chalkboard SE','Comic Sans MS',cursive}
+#scarcity_a_svg__fig-ms-seasons .paper{fill:#FFFDF6;stroke:#E7DFCB;stroke-width:2}
+#scarcity_a_svg__fig-ms-seasons .ink{fill:none;stroke:#2C2A26;stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
+#scarcity_a_svg__fig-ms-seasons .title{font-size:30px;fill:#2C2A26}
+#scarcity_a_svg__fig-ms-seasons .sub{font-size:15.5px;fill:#6f685c}
+#scarcity_a_svg__fig-ms-seasons .lbl{font-size:14px;fill:#2C2A26}
+#scarcity_a_svg__fig-ms-seasons .gl{font-size:12.5px;fill:#8a8170}
+#scarcity_a_svg__fig-ms-seasons .full{fill:none;stroke:#C56A40;stroke-width:2.4;stroke-linecap:round}
+#scarcity_a_svg__fig-ms-seasons .acctx{font-size:13.5px;fill:#C56A40}
+#scarcity_a_svg__fig-ms-seasons .scorelbl{font-size:11px;fill:#8a8170;letter-spacing:.08em}
+#scarcity_a_svg__fig-ms-seasons .barink{fill:#2C2A26}
+#scarcity_a_svg__fig-ms-seasons .barcoral{fill:#F4B393;stroke:#C56A40;stroke-width:1.6}
+#scarcity_a_svg__fig-ms-seasons .barframe{fill:none;stroke:#9a9488;stroke-width:1.6;stroke-dasharray:2 4}
+#scarcity_a_svg__fig-ms-seasons .barfill{fill:#a59d8c}
+#scarcity_a_svg__fig-ms-seasons .kick{font-size:18px;fill:#C56A40}
+</style>
+
+<rect class="paper" x="18" y="18" width="644" height="434" rx="16"/>
+<text class="title" x="340" y="50" text-anchor="middle">The Same Mind, Two Seasons</text>
+<text class="sub" x="340" y="77" text-anchor="middle">Sugarcane farmers, tested poor before harvest and flush after.</text>
+
+<!-- LEFT: poor, mind full -->
+<circle class="ink" cx="200" cy="178" r="58"/>
+<path class="full" d="M 164,162 C 186,150 214,192 236,176"/>
+<path class="full" d="M 162,180 C 188,170 212,208 238,192" opacity=".85"/>
+<path class="full" d="M 166,198 C 190,190 214,220 234,208" opacity=".7"/>
+<path class="full" d="M 172,146 C 188,138 206,156 220,146" opacity=".6"/>
+<text class="lbl" x="200" y="262" text-anchor="middle">before harvest · poor</text>
+<text class="gl" x="200" y="281" text-anchor="middle">the mind is already full</text>
+
+<!-- LEFT IQ score: one colour, simply shorter -->
+<text class="scorelbl" x="200" y="312" text-anchor="middle">IQ SCORE</text>
+<rect class="barframe" x="125" y="320" width="150" height="22" rx="3"/>
+<rect class="barfill" x="128" y="323" width="125" height="16" rx="2"/>
+<text class="acctx" x="200" y="360" text-anchor="middle">13 points lower</text>
+
+<!-- RIGHT: flush, mind clear -->
+<circle class="ink" cx="480" cy="178" r="58"/>
+<path class="full" d="M 452,180 C 468,168 492,168 508,180" opacity=".5"/>
+<text class="lbl" x="480" y="262" text-anchor="middle">after harvest · flush</text>
+<text class="gl" x="480" y="281" text-anchor="middle">the same mind, with room</text>
+
+<!-- RIGHT IQ score: full bar -->
+<text class="scorelbl" x="480" y="312" text-anchor="middle">IQ SCORE</text>
+<rect class="barframe" x="405" y="320" width="150" height="22" rx="3"/>
+<rect class="barfill" x="408" y="323" width="144" height="16" rx="2"/>
+<text class="gl" x="480" y="360" text-anchor="middle">their own normal</text>
+
+<text class="kick" x="340" y="412" text-anchor="middle">Nothing in them changed. Only what their mind was carrying.</text>
+</svg>
+</div><p class="co-cap">The same farmer&#x27;s mind, poor before the harvest and flush after. Short on money, the IQ score falls about thirteen points, with nothing in the person changed.</p></div><div class="co-panel co-p2-1"><div class="co-stage"><svg id="scarcity_b_svg__fig-ms-glass" viewBox="0 0 680 470" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="scarcity_b_svg__msg-t scarcity_b_svg__msg-d">
+<title id="scarcity_b_svg__msg-t">A Mind Already Full</title>
+<desc id="scarcity_b_svg__msg-d">A glass filled to the brim with the scarce worry. A jug tries to pour in planning, self-control and patience, but there is no room and they spill over the sides.</desc>
+<style>
+#scarcity_b_svg__fig-ms-glass{font-family:'Bradley Hand','Marker Felt','Chalkboard SE','Comic Sans MS',cursive}
+#scarcity_b_svg__fig-ms-glass .paper{fill:#FFFDF6;stroke:#E7DFCB;stroke-width:2}
+#scarcity_b_svg__fig-ms-glass .ink{fill:none;stroke:#2C2A26;stroke-width:3.2;stroke-linecap:round;stroke-linejoin:round}
+#scarcity_b_svg__fig-ms-glass .title{font-size:31px;fill:#2C2A26}
+#scarcity_b_svg__fig-ms-glass .sub{font-size:15.5px;fill:#6f685c}
+#scarcity_b_svg__fig-ms-glass .lbl{font-size:14px;fill:#2C2A26}
+#scarcity_b_svg__fig-ms-glass .gl{font-size:12.5px;fill:#8a8170}
+#scarcity_b_svg__fig-ms-glass .fill{fill:#F4B393;stroke:#C56A40;stroke-width:2.4;stroke-linejoin:round}
+#scarcity_b_svg__fig-ms-glass .acctx{font-size:13.5px;fill:#C56A40}
+#scarcity_b_svg__fig-ms-glass .spill{fill:none;stroke:#9a9488;stroke-width:2.6;stroke-linecap:round}
+#scarcity_b_svg__fig-ms-glass .brim{fill:none;stroke:#2C2A26;stroke-width:1.6;stroke-dasharray:2 7;stroke-linecap:round;opacity:.55}
+#scarcity_b_svg__fig-ms-glass .kick{font-size:18px;fill:#C56A40}
+#scarcity_b_svg__fig-ms-glass .arrow{fill:none;stroke:#2C2A26;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
+</style>
+
+<rect class="paper" x="18" y="18" width="644" height="434" rx="16"/>
+<text class="title" x="340" y="54" text-anchor="middle">A Mind Already Full</text>
+<text class="sub" x="340" y="81" text-anchor="middle">Scarcity fills the glass. There is no room to pour anything else in.</text>
+
+<!-- the pour from above: the things that can't get in -->
+<text class="lbl" x="340" y="124" text-anchor="middle">the plan · the form · the patience</text>
+<path class="arrow" d="M 300,134 C 300,150 312,158 322,168" marker-end="url(#scarcity_b_svg__msg-ah)"/>
+<path class="arrow" d="M 380,134 C 380,150 368,158 358,168" marker-end="url(#scarcity_b_svg__msg-ah)"/>
+<defs><marker id="scarcity_b_svg__msg-ah" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#2C2A26"/></marker></defs>
+
+<!-- the glass -->
+<path class="ink" d="M 286,184 L 300,388 L 380,388 L 394,184"/>
+<!-- coral fill, right to the brim -->
+<path class="fill" d="M 293,196 L 303,382 L 377,382 L 387,196 Z"/>
+<path class="brim" d="M 290,196 L 390,196"/>
+<text x="340" y="300" text-anchor="middle" style="font-size:14px;fill:#5e3017;letter-spacing:.04em">THE SCARCE</text>
+<text x="340" y="320" text-anchor="middle" style="font-size:14px;fill:#5e3017;letter-spacing:.04em">WORRY</text>
+<text class="acctx" x="340" y="214" text-anchor="middle">already full</text>
+
+<!-- the overflow: spills over both rims, can't fit -->
+<path class="spill" d="M 290,196 C 280,210 276,230 282,252"/>
+<path class="spill" d="M 390,196 C 400,210 404,230 398,252"/>
+<circle cx="278" cy="262" r="3.2" fill="#9a9488"/>
+<circle cx="402" cy="262" r="3.2" fill="#9a9488"/>
+<text class="gl" x="236" y="300" text-anchor="middle">overflows —</text>
+<text class="gl" x="236" y="316" text-anchor="middle">no room left</text>
+<text class="gl" x="446" y="300" text-anchor="middle">planning,</text>
+<text class="gl" x="446" y="316" text-anchor="middle">patience,</text>
+<text class="gl" x="446" y="332" text-anchor="middle">self-control</text>
+
+<text class="kick" x="340" y="426" text-anchor="middle">The trouble isn't less ability. The glass is already full.</text>
+</svg>
+</div><p class="co-cap">The glass is already full of the scarce worry. The plan, the form, and the patience cannot fit, so they spill over the sides.</p></div><div class="co-panel co-p2-2"><div class="co-stage"><svg id="scarcity_c_svg__fig-ms-tunnel" viewBox="0 0 680 470" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="scarcity_c_svg__mst-t scarcity_c_svg__mst-d">
+<title id="scarcity_c_svg__mst-t">Scarcity Narrows the Beam</title>
+<desc id="scarcity_c_svg__mst-d">A spotlight throws a bright coral cone onto one urgent thing while everything else around it sits in shadow, the way scarcity tunnels attention onto the immediate problem.</desc>
+<style>
+#scarcity_c_svg__fig-ms-tunnel{font-family:'Bradley Hand','Marker Felt','Chalkboard SE','Comic Sans MS',cursive}
+#scarcity_c_svg__fig-ms-tunnel .paper{fill:#FFFDF6;stroke:#E7DFCB;stroke-width:2}
+#scarcity_c_svg__fig-ms-tunnel .ink{fill:none;stroke:#2C2A26;stroke-width:3.2;stroke-linecap:round;stroke-linejoin:round}
+#scarcity_c_svg__fig-ms-tunnel .title{font-size:31px;fill:#2C2A26}
+#scarcity_c_svg__fig-ms-tunnel .sub{font-size:15.5px;fill:#6f685c}
+#scarcity_c_svg__fig-ms-tunnel .lbl{font-size:14px;fill:#2C2A26}
+#scarcity_c_svg__fig-ms-tunnel .dim{font-size:13px;fill:#b8b2a6}
+#scarcity_c_svg__fig-ms-tunnel .beam{fill:#F4B393;opacity:.32}
+#scarcity_c_svg__fig-ms-tunnel .lit{fill:#FFFDF6;stroke:#C56A40;stroke-width:2.8;stroke-linejoin:round}
+#scarcity_c_svg__fig-ms-tunnel .acctx{font-size:13.5px;fill:#C56A40}
+#scarcity_c_svg__fig-ms-tunnel .shadow{fill:none;stroke:#cfc9bc;stroke-width:2.4;stroke-linejoin:round}
+#scarcity_c_svg__fig-ms-tunnel .kick{font-size:18px;fill:#C56A40}
+</style>
+
+<rect class="paper" x="18" y="18" width="644" height="434" rx="16"/>
+<text class="title" x="340" y="54" text-anchor="middle">Scarcity Narrows the Beam</text>
+<text class="sub" x="340" y="81" text-anchor="middle">It lights the one urgent thing and leaves the rest in the dark.</text>
+
+<!-- the lamp -->
+<path class="ink" d="M 318,116 L 362,116 L 352,140 L 328,140 Z"/>
+<text class="lbl" x="340" y="108" text-anchor="middle">scarcity</text>
+
+<!-- the beam cone -->
+<path class="beam" d="M 330,140 L 232,372 L 448,372 L 350,140 Z"/>
+
+<!-- the one lit thing -->
+<rect class="lit" x="292" y="328" width="96" height="46" rx="3"/>
+<text class="acctx" x="340" y="349" text-anchor="middle" style="font-size:13px">the rent</text>
+<text class="acctx" x="340" y="366" text-anchor="middle" style="font-size:13px">the deadline</text>
+
+<!-- the things in shadow, around the cone -->
+<g class="shadow"><rect x="96" y="250" width="58" height="36" rx="3"/></g>
+<text class="dim" x="125" y="304" text-anchor="middle">the plan</text>
+<g class="shadow"><rect x="120" y="346" width="58" height="36" rx="3"/></g>
+<text class="dim" x="149" y="400" text-anchor="middle">the form</text>
+<g class="shadow"><rect x="506" y="250" width="74" height="36" rx="3"/></g>
+<text class="dim" x="543" y="304" text-anchor="middle">the long term</text>
+<g class="shadow"><rect x="500" y="346" width="62" height="36" rx="3"/></g>
+<text class="dim" x="531" y="400" text-anchor="middle">patience</text>
+
+<text class="kick" x="340" y="430" text-anchor="middle">You see the emergency in sharp focus. You miss all that sits beside it.</text>
+</svg>
+</div><p class="co-cap">Scarcity throws a bright beam on the one urgent thing. Everything beside it sits in shadow.</p></div></div>
+  </div>
+  <p class="co-body">Having too little narrows the mind to the lack — which helps in the moment, and quietly costs everything else.</p>
+  <p class="co-kicker">when someone can&#x27;t act, it&#x27;s often not weak will. It&#x27;s a mind already full.</p>
+  <div class="co-source"><b>The research.</b> Mullainathan &amp; Shafir (2013) &#x27;Scarcity: Why Having Too Little Means So Much&#x27; — sugarcane farmers, poor before harvest vs. flush after (~13 IQ points). <a class="co-src-link" href="https://www.science.org/doi/10.1126/science.1238041" target="_blank" rel="noopener">Read the source →</a></div>
+</section></div>
+
+  <section id="about" class="co-shared">
+    <h2>Why this exists</h2>
+    <p>Complex ideas are hard to hold onto. A dense paper, a subtle finding, a tangled concept — most of it fades soon after you read it. Napkin Solo exists to change that: to take difficult ideas and make them easy to grasp and hard to forget. What reaches you is disarmingly simple — a single picture that makes an idea click and stays with you. Behind that simplicity is an AI-assisted engine we have spent a long time building and refining.</p>
+    <h3 id="name">The origin of the name</h3>
+    <p>Think of the best explanation anyone ever gave you — chances are it happened over a table,
+    and someone reached for a napkin to draw it. When words won't do, we sketch. That napkin is the
+    whole idea here: the shortest path from a tangled thought to <em>oh, I get it</em>.</p>
+    <p>And <b>Solo</b> — for Han Solo. The instinct to take the direct route, trust your own read of
+    a thing, and pull it off with a little swagger. Complex ideas, drawn plainly, and without fuss.</p>
+  </section>
+
+  <section id="how" class="co-how">
+    <h3>How it works</h3>
+    <p class="co-flowlead">Every sketch starts from a real source and follows the same path.</p>
+    <div class="co-flow"><div class="co-step"><div class="co-step-t">A document or research paper</div><div class="co-step-s">a paper, report, or study</div></div><div class="co-arrow">→</div><div class="co-step"><div class="co-step-t">Broken into its core ideas</div><div class="co-step-s">the essence, pulled out</div></div><div class="co-arrow">→</div><div class="co-step"><div class="co-step-t">You choose one — or several</div><div class="co-step-s">the ones that matter to you</div></div><div class="co-arrow">→</div><div class="co-step"><div class="co-step-t">Each becomes a sketch</div><div class="co-step-s">simple, easy to understand, hard to forget</div></div></div>
+  </section>
+</div>
+
+<footer class="co-foot">
+  <span>Napkin Solo — complex ideas, made simple and memorable.</span>
+  <span><a href="#about">About</a> &middot; <a href="#name">The origin of the name</a> &middot; <a href="#how">How it works</a> &middot; napkinsolo.ai</span>
+</footer>
+
+<div id="co-uc" class="co-uc"></div>
+<script>
+function showConcept(id){
+  document.querySelectorAll('.cp').forEach(function(p){ p.hidden = (p.dataset.cid !== id); });
+  document.querySelectorAll('.co-dd-item').forEach(function(a){ a.classList.toggle('co-dd-cur', a.dataset.cid === id); });
+  var dd = document.querySelector('.co-dd'); if (dd) dd.open = false;
+  var sm = matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth';
+  window.scrollTo({top:0, behavior:sm});
+}
+var ucT;
+function uc(label){
+  var t = document.getElementById('co-uc');
+  t.textContent = label + ' — under construction';
+  t.classList.add('show');
+  clearTimeout(ucT); ucT = setTimeout(function(){ t.classList.remove('show'); }, 2600);
+  var dd = document.querySelector('.co-dd'); if (dd) dd.open = false;
+}
+</script>
+</body></html>
