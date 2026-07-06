@@ -130,6 +130,9 @@
 </style>
 </head>
 <body>
+<!-- Bharat Khandelwal portfolio ribbon — shown only when the visitor arrived from bharatkhandelwal.com -->
+<a id="bk-ribbon" href="https://bharatkhandelwal.com" hidden style="position:fixed;top:0;left:0;z-index:99999;font-family:Georgia,'Times New Roman',serif;font-size:13px;color:#555;background:rgba(255,255,255,.92);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);padding:6px 13px;border:1px solid rgba(0,0,0,.09);border-top:none;border-left:none;border-bottom-right-radius:9px;text-decoration:none;line-height:1.4;box-shadow:0 2px 8px rgba(0,0,0,.05)">←&nbsp;Bharat&nbsp;Khandelwal</a>
+<script>(function(){function f(){if(/[?&]from=bk(?:&|$)/.test(location.search))return true;try{var h=new URL(document.referrer).hostname;if(h==='bharatkhandelwal.com'||h.endsWith('.bharatkhandelwal.com'))return true;}catch(e){}try{return sessionStorage.getItem('bk_from')==='1';}catch(e){return false;}}if(f()){try{sessionStorage.setItem('bk_from','1');}catch(e){}var el=document.getElementById('bk-ribbon');if(el)el.hidden=false;}})();</script>
 <div id="app"></div>
 <script>
 /* ========== CARD DATA ========== */
