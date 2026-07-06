@@ -20,6 +20,9 @@
     display:flex;align-items:center;justify-content:space-between;padding:11px 22px;gap:16px}
   .co-brand{font-family:var(--hand);font-size:21px;color:var(--ink);text-decoration:none;white-space:nowrap}
   .co-brand span{font-family:var(--sans);font-size:10px;letter-spacing:1.4px;text-transform:uppercase;color:var(--muted);margin-left:9px}
+  .co-navleft{display:flex;align-items:center;gap:14px;min-width:0}
+  .co-bkback{font-family:var(--serif);font-size:14px;color:var(--muted);text-decoration:none;padding-right:14px;border-right:1px solid var(--stroke);white-space:nowrap}
+  .co-bkback:hover{color:var(--coral)}
   .co-navlinks{display:flex;align-items:center;gap:20px;font-size:14px}
   .co-navlinks>a{color:var(--sub);text-decoration:none} .co-navlinks>a:hover{color:var(--coral)}
   .co-dd{position:relative}
@@ -36,7 +39,7 @@
   .co-dd-soon{padding:7px 12px;border-radius:8px;color:var(--muted);text-decoration:none;font-size:14px;cursor:pointer;display:flex;justify-content:space-between}
   .co-dd-soon:hover{background:var(--paper2)}
   .co-dd-soon em{font-style:normal;font-size:10px;color:var(--floor);border:1px solid var(--stroke);border-radius:20px;padding:1px 7px}
-  @media(max-width:560px){.co-brand span{display:none} .co-navlinks{gap:14px;font-size:13px}}
+  @media(max-width:640px){.co-nav{flex-wrap:wrap;justify-content:center;gap:5px 16px} .co-brand span{display:none} .co-navlinks{gap:14px;font-size:13px} .co-bkback{font-size:12.5px;padding-right:10px} .co-navleft{gap:10px}}
   .co-eyebrow{font-size:12.5px;letter-spacing:2.5px;text-transform:uppercase;color:var(--muted);margin:0 0 14px}
   h1{font-family:var(--hand);font-size:56px;line-height:1.02;margin:0 0 14px;letter-spacing:.5px;text-wrap:balance}
   .co-idea{font-family:var(--serif);font-size:23px;line-height:1.4;color:var(--sub);margin:0 0 6px;max-width:36ch}
@@ -85,7 +88,10 @@
 </style></head>
 <body>
 <nav class="co-nav">
-  <a class="co-brand" href="#top">Napkin&nbsp;Solo <span>complex ideas, made simple</span></a>
+  <div class="co-navleft">
+    <a class="co-bkback" href="https://bharatkhandelwal.com" hidden>←&nbsp;Bharat&nbsp;Khandelwal</a>
+    <a class="co-brand" href="#top">Napkin&nbsp;Solo <span>complex ideas, made simple</span></a>
+  </div>
   <div class="co-navlinks">
     <details class="co-dd"><summary>Concepts</summary>
       <div class="co-dd-menu">
@@ -836,5 +842,20 @@ function uc(label){
   clearTimeout(ucT); ucT = setTimeout(function(){ t.classList.remove('show'); }, 2600);
   var dd = document.querySelector('.co-dd'); if (dd) dd.open = false;
 }
+// Portfolio ribbon: show "← Bharat Khandelwal" only when the visitor arrived from
+// bharatkhandelwal.com (referrer or ?from=bk), and remember it for the session.
+(function(){
+  function fromBK(){
+    if (/[?&]from=bk(?:&|$)/.test(location.search)) return true;
+    try { var h = new URL(document.referrer).hostname;
+      if (h === 'bharatkhandelwal.com' || h.endsWith('.bharatkhandelwal.com')) return true; } catch(e){}
+    try { return sessionStorage.getItem('ns_from_bk') === '1'; } catch(e){ return false; }
+  }
+  if (fromBK()){
+    try { sessionStorage.setItem('ns_from_bk','1'); } catch(e){}
+    var el = document.querySelector('.co-bkback');
+    if (el) el.hidden = false;
+  }
+})();
 </script>
 </body></html>
