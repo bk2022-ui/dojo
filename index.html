@@ -65,6 +65,12 @@
   .co-shared h2{font-family:var(--hand);font-size:30px;margin:0 0 14px;padding-top:34px;border-top:1px solid var(--stroke)}
   .co-shared h3{font-family:var(--hand);font-size:24px;margin:40px 0 10px}
   .co-shared p{font-family:var(--serif);font-size:17px;line-height:1.72;color:var(--sub)}
+  /* "On the name" — editorial etymology block: rust rule + tracked kicker + serif prose */
+  .co-name{max-width:56ch;margin:46px auto 0;border-left:2px solid var(--coral);padding:3px 0 3px 26px}
+  .co-name .co-name-kicker{font-family:var(--sans);font-size:11.5px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--coral);margin:0 0 14px}
+  .co-name p{font-family:var(--serif);font-size:17px;line-height:1.75;color:var(--sub);margin:0 0 15px}
+  .co-name p:last-child{margin-bottom:0}
+  .co-name em{font-style:italic;color:var(--ink)}
   .co-how{max-width:720px;margin:52px auto 0}
   .co-how h3{font-family:var(--hand);font-size:26px;margin:0 0 4px;text-align:center}
   .co-flowlead{text-align:center;color:var(--muted);font-size:14px;margin:0 0 22px}
@@ -805,13 +811,16 @@
   <section id="about" class="co-shared">
     <h2>Why this exists</h2>
     <p>Complex ideas are hard to hold onto. A dense paper, a subtle finding, a tangled concept — most of it fades soon after you read it. Napkin Solo exists to change that: to take difficult ideas and make them easy to grasp and hard to forget. What reaches you is disarmingly simple — a single picture that makes an idea click and stays with you. Behind that simplicity is an AI-assisted engine we have spent a long time building and refining.</p>
-    <h3 id="name">The origin of the name</h3>
-    <p>Think of the best explanation anyone ever gave you — chances are it happened over a table,
-    and someone reached for a napkin to draw it. When words won't do, we sketch. That napkin is the
-    whole idea here: the shortest path from a tangled thought to <em>oh, I get it</em>.</p>
-    <p>And <b>Solo</b> — for Han Solo. The instinct to take the direct route, trust your own read of
-    a thing, and pull it off with a little swagger. Complex ideas, drawn plainly, and without fuss.</p>
   </section>
+
+  <aside id="name" class="co-name">
+    <p class="co-name-kicker">On the name</p>
+    <p>A <em>napkin</em> is where the clearest explanations tend to happen — someone reaches across
+    a café table and draws. When words won't carry an idea, a quick sketch will. That is the whole
+    intent here: the shortest path from a tangled thought to <em>oh, I get it</em>.</p>
+    <p><em>Solo</em> is a nod to <em>Han Solo</em> — the instinct to take the direct route, trust
+    your own read of a thing, and pull it off without fuss. Complex ideas, drawn by hand, made plain.</p>
+  </aside>
 
   <section id="how" class="co-how">
     <h3>How it works</h3>
@@ -822,7 +831,7 @@
 
 <footer class="co-foot">
   <span>Napkin Solo — complex ideas, made simple and memorable.</span>
-  <span><a href="#about">About</a> &middot; <a href="#name">The origin of the name</a> &middot; <a href="#how">How it works</a> &middot; napkinsolo.ai</span>
+  <span><a href="#about">About</a> &middot; <a href="#name">On the name</a> &middot; <a href="#how">How it works</a> &middot; napkinsolo.ai</span>
 </footer>
 
 <div id="co-uc" class="co-uc"></div>
