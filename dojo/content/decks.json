@@ -1,5 +1,5 @@
 {
- "contentVersion": 3,
+ "contentVersion": 4,
  "updated": "2026-07-07",
  "minEngineVersion": 1,
  "decks": [
@@ -2318,6 +2318,222 @@
      "example": "The mill's wash test shows 4.5% lengthwise shrinkage on your linen. Your patterns were drafted with 2% allowance. You have three options: request sanforization, redraft patterns, or specify a pre-washed finish. None of these are easy to solve after cutting 3,000 metres of fabric.",
      "q": "Why must you know shrinkage figures before cutting fabric?",
      "a": "Shrinkage affects finished dimensions and seam allowances — if fabric shrinks beyond your built-in allowance, finished products will be undersized after washing. Get wash test data at specification stage and build it into your patterns."
+    }
+   ]
+  },
+  {
+   "id": "epicurus",
+   "name": "The Nature of Things",
+   "tagline": "Epicurus and Lucretius on how to live without fear",
+   "emoji": "🌿",
+   "lang": "en-US",
+   "color": "#b3892f",
+   "domains": [
+    "Atoms & the Void",
+    "Mind, Soul & Death",
+    "Gods & Nature",
+    "Pleasure & Tranquility"
+   ],
+   "cards": [
+    {
+     "id": "lu-atoms-void",
+     "domain": "Atoms & the Void",
+     "name": "Atoms and the void",
+     "kanji": "De Rerum Natura",
+     "description": "Lucretius holds that everything which exists is either indivisible particles (atoms) or the empty space (void) they move through. There is no third thing; all we see is atoms combining, colliding, and dispersing.",
+     "example": "A wave, a flame, a person — each is a passing pattern of atoms in motion. Nothing is solid all the way down; even stone is mostly void with particles held in arrangement.",
+     "q": "What are the only two things Lucretius says truly exist?",
+     "a": "Atoms (indivisible particles) and the void (empty space) — everything else is just atoms arranged within the void."
+    },
+    {
+     "id": "lu-nothing-from-nothing",
+     "domain": "Atoms & the Void",
+     "name": "Nothing comes from nothing",
+     "kanji": "nil posse creari de nihilo",
+     "description": "Lucretius's first principle of physics: nothing can be created out of nothing. Whatever comes to be arises from pre-existing atoms by fixed natural causes, not by divine whim.",
+     "example": "Crops need seed, rain, and soil; they do not spring from bare ground. That things require specific ingredients and seasons is evidence that creation runs on causes, not miracles.",
+     "q": "What does 'nothing comes from nothing' rule out?",
+     "a": "Creation from nothing by the gods — everything arises from pre-existing atoms through fixed causes, which is why things need specific ingredients."
+    },
+    {
+     "id": "lu-nothing-to-nothing",
+     "domain": "Atoms & the Void",
+     "name": "Nothing returns to nothing",
+     "kanji": "the conservation of matter",
+     "description": "The mirror of the first principle: nature never annihilates anything into nothing. When a thing breaks down, its atoms disperse and recombine into new things; matter is conserved.",
+     "example": "A fallen tree rots and feeds the forest — its atoms become soil, fungus, and fresh growth. Destruction is only rearrangement; nothing is ever truly lost.",
+     "q": "For Lucretius, what happens to a thing when it is destroyed?",
+     "a": "Its atoms disperse and recombine into other things — nothing is annihilated into nothing; matter is conserved."
+    },
+    {
+     "id": "lu-swerve",
+     "domain": "Atoms & the Void",
+     "name": "The swerve",
+     "kanji": "clinamen",
+     "description": "Lucretius's boldest idea: as atoms fall through the void they occasionally swerve by a tiny, uncaused amount. Without it, atoms would fall in parallel and never meet — and all would be rigidly determined.",
+     "example": "The swerve lets atoms collide and form things, and it breaks the chain of strict cause and effect, leaving room for free will. It is his answer to fatalism.",
+     "q": "Why does Lucretius introduce the swerve (clinamen)?",
+     "a": "So atoms can collide and form things, and to break strict determinism — the tiny uncaused swerve leaves room for free will."
+    },
+    {
+     "id": "lu-infinite",
+     "domain": "Atoms & the Void",
+     "name": "A boundless universe",
+     "kanji": "the universe has no edge",
+     "description": "Lucretius argues the universe is infinite and holds countless other worlds. Fly to its supposed edge and hurl a spear: it either flies on or is stopped — either way, there is always more beyond.",
+     "example": "Ours is not the only world, nor the center of anything. This dethroned humanity from the cosmic center long before modern astronomy did.",
+     "q": "How does Lucretius argue the universe has no edge?",
+     "a": "The spear thought-experiment: at any supposed boundary a thrown spear flies on or is blocked by something beyond — so there is always more; the universe is infinite."
+    },
+    {
+     "id": "lu-simulacra",
+     "domain": "Mind, Soul & Death",
+     "name": "Simulacra",
+     "kanji": "eidola — films of atoms",
+     "description": "Lucretius explains perception by thin films of atoms (simulacra) that peel continuously off objects and stream into our eyes and minds. Seeing is physical contact with these films.",
+     "example": "You see a friend because films shed from them reach your eyes. Dreams and visions of the dead are stray films still drifting in the air — not ghosts, just physics.",
+     "q": "How does Lucretius explain seeing — and 'ghosts'?",
+     "a": "Objects shed thin atomic films (simulacra) that enter the eye; apparitions are just stray films still drifting, not spirits."
+    },
+    {
+     "id": "lu-mortal-soul",
+     "domain": "Mind, Soul & Death",
+     "name": "The mortal soul",
+     "kanji": "the mind is made of atoms",
+     "description": "For Lucretius the mind and spirit are physical — fine, fast atoms woven through the body. Because the soul is material and bound to the body, it is born, grows, sickens, and dies with it.",
+     "example": "Wine clouds the mind, a blow knocks it out, illness confuses it. That the mind is moved by bodily things shows it is bodily — and so cannot outlive the body.",
+     "q": "Why does Lucretius conclude the soul is mortal?",
+     "a": "It is made of fine atoms bound to the body and is affected by physical things (wine, blows, illness), so it dies when the body dies."
+    },
+    {
+     "id": "lu-death-nothing",
+     "domain": "Mind, Soul & Death",
+     "name": "Death is nothing to us",
+     "kanji": "nil mors est ad nos",
+     "description": "The heart of the Epicurean consolation: since the soul dies with the body, death is not an experience we undergo. Where we are, death is not; where death is, we are not.",
+     "example": "You will not suffer your own death any more than you suffered before you were born. There is no dark eternity to dread — only the simple absence of sensation.",
+     "q": "Why does Lucretius say 'death is nothing to us'?",
+     "a": "Because the soul ends at death, no one is left to be harmed — where death is, we are not, so it cannot touch us."
+    },
+    {
+     "id": "lu-symmetry",
+     "domain": "Mind, Soul & Death",
+     "name": "The mirror of the past",
+     "kanji": "the symmetry argument",
+     "description": "Lucretius disarms the fear of death by pointing back: the endless time before your birth, when you did not exist, held no terror. The endless time after death is its mirror image — equally nothing to you.",
+     "example": "You feel no dread about the centuries before you were born. Since after-death nonexistence is exactly the same, dreading it is simply inconsistent.",
+     "q": "What is Lucretius's 'symmetry' argument against fearing death?",
+     "a": "Nonexistence after death mirrors the nonexistence before birth, which we don't fear — so fearing death is inconsistent."
+    },
+    {
+     "id": "lu-fear-death",
+     "domain": "Mind, Soul & Death",
+     "name": "The fear of death",
+     "kanji": "the hidden root",
+     "description": "Lucretius diagnoses the terror of death as the secret source of much human misery — greed, ambition, and cruelty are attempts to outrun mortality. Cure the fear, and the vices lose their fuel.",
+     "example": "People hoard wealth and claw for status partly to feel they matter against death. Remove the dread, Lucretius says, and the frantic grasping quiets.",
+     "q": "What does Lucretius blame much human vice and striving on?",
+     "a": "The buried fear of death — greed, ambition, and cruelty try to escape mortality; remove the fear and they lose their fuel."
+    },
+    {
+     "id": "lu-indifferent-gods",
+     "domain": "Gods & Nature",
+     "name": "The indifferent gods",
+     "kanji": "gods who do not intervene",
+     "description": "Epicurus and Lucretius do not deny the gods, but hold that they live in perfect tranquility, wholly unconcerned with human affairs. They neither reward nor punish, and answer no prayers.",
+     "example": "Storms, plagues, and good harvests are natural events, not divine verdicts. Reading them as messages from angry or pleased gods only breeds needless fear.",
+     "q": "What is the Epicurean view of the gods?",
+     "a": "They exist but live in tranquility, indifferent to us — not intervening, rewarding, or punishing, so natural events are not divine verdicts."
+    },
+    {
+     "id": "lu-religio",
+     "domain": "Gods & Nature",
+     "name": "Religion as a source of evil",
+     "kanji": "tantum religio potuit suadere malorum",
+     "description": "Lucretius uses 'religio' for the superstitious fear of the gods, and calls it a source of great evil: 'so much wrong has religion been able to urge.' Fear of divine punishment drives cruelty and misery.",
+     "example": "He opens with Agamemnon sacrificing his own daughter to win fair winds — superstition demanding an atrocity. The cure is understanding nature, which dissolves the fear.",
+     "q": "What does Lucretius mean by 'religio,' and why attack it?",
+     "a": "Superstitious fear of the gods — he blames it for great evil (like Iphigenia's sacrifice); understanding nature dissolves the fear."
+    },
+    {
+     "id": "lu-no-design",
+     "domain": "Gods & Nature",
+     "name": "A world not made for us",
+     "kanji": "against cosmic purpose",
+     "description": "Lucretius rejects the idea that the world was designed for humanity. The cosmos arose from countless atomic collisions over vast time, not a plan — as its flaws and hostility suggest.",
+     "example": "Deserts, disease, wild beasts, and infant helplessness are poor evidence of a world built for our benefit. Order emerged by trial across aeons, not by intention.",
+     "q": "Why does Lucretius deny the world was designed for us?",
+     "a": "It arose from atomic collisions over vast time, not a plan — and its flaws and hostility are poor evidence of benevolent design."
+    },
+    {
+     "id": "lu-epicurus",
+     "domain": "Gods & Nature",
+     "name": "Epicurus the liberator",
+     "kanji": "the hero of the poem",
+     "description": "Lucretius casts Epicurus not as a god but as a human hero who freed mankind from the crushing fear of the gods and of death. Where religion had pinned humanity down, understanding nature broke the chains.",
+     "example": "He praises Epicurus as the first to raise mortal eyes against superstition and travel beyond the 'flaming walls of the world' in thought, returning with the truth that frees us.",
+     "q": "How does Lucretius portray Epicurus?",
+     "a": "As a human liberator who freed mankind from the fear of gods and death through understanding nature — the poem's hero, not a deity."
+    },
+    {
+     "id": "lu-plague",
+     "domain": "Gods & Nature",
+     "name": "The plague of Athens",
+     "kanji": "the poem's stark ending",
+     "description": "Lucretius ends On the Nature of Things not with comfort but with a harrowing account of the plague that devastated Athens — bodies, panic, and the collapse of custom. Nature is indifferent; it falls to us to face it clearly.",
+     "example": "The unflinching finale refuses false consolation. It leaves the reader with the Epicurean task: meet even catastrophe without the added torment of superstition.",
+     "q": "How does Lucretius end his poem, and why is it striking?",
+     "a": "With the brutal plague of Athens — no comforting close; nature is indifferent, and we are left to face reality clearly, without superstition."
+    },
+    {
+     "id": "lu-pleasure",
+     "domain": "Pleasure & Tranquility",
+     "name": "Pleasure as the highest good",
+     "kanji": "hedone, rightly understood",
+     "description": "Epicurean 'pleasure' is not indulgence but the absence of pain in body and mind. The aim is not to chase intense sensations, which bring their own troubles, but to reach a stable, contented ease.",
+     "example": "A simple meal eaten with a calm mind and good company beats a lavish feast shadowed by excess and anxiety. The goal is to remove disturbance, not to pile on stimulation.",
+     "q": "What do the Epicureans actually mean by 'pleasure'?",
+     "a": "The absence of pain in body and mind — a stable contentment, not indulgence or the chasing of intense sensation."
+    },
+    {
+     "id": "lu-ataraxia",
+     "domain": "Pleasure & Tranquility",
+     "name": "Ataraxia",
+     "kanji": "freedom from disturbance",
+     "description": "Ataraxia is the tranquil, unshaken mind that is the true aim of Epicurean life — a serenity reached by removing fear (of gods and death) and limiting desire. It is peace, not thrill.",
+     "example": "The sage is like calm water: events ripple the surface but do not churn the depths. Understanding nature is what makes this steadiness possible.",
+     "q": "What is ataraxia, and what produces it?",
+     "a": "Tranquility — an unshaken mind, produced by removing the fear of gods and death and by limiting desire."
+    },
+    {
+     "id": "lu-tetrapharmakos",
+     "domain": "Pleasure & Tranquility",
+     "name": "The fourfold cure",
+     "kanji": "tetrapharmakos",
+     "description": "The Epicurean remedy for anxiety in four strokes: do not fear the gods; do not fear death; what is good is easy to get; what is terrible is easy to endure. Memorize it, and you carry the therapy in miniature.",
+     "example": "Faced with dread, run the four: the gods do not threaten you, death will not be experienced, your real needs are simple, and severe pain is either brief or bearable. The panic loosens.",
+     "q": "What are the four parts of the Epicurean 'fourfold cure'?",
+     "a": "Don't fear the gods; don't fear death; what's good is easy to get; what's terrible is easy to endure."
+    },
+    {
+     "id": "lu-desires",
+     "domain": "Pleasure & Tranquility",
+     "name": "The three kinds of desire",
+     "kanji": "natural, necessary, vain",
+     "description": "Epicurus sorts desires into three: natural and necessary (food, shelter, safety, friendship), natural but unnecessary (luxuries), and vain and empty (fame, unlimited wealth). Happiness comes from meeting the first and pruning the rest.",
+     "example": "Hunger is easily met with plain food; a craving for gourmet excess is optional; the hunger for fame is bottomless and never filled. Wisdom is telling them apart.",
+     "q": "How does Epicurus classify desires, and which should we pursue?",
+     "a": "Natural-and-necessary, natural-but-unnecessary, and vain/empty — satisfy the necessary (easily met) and prune the rest, especially the vain."
+    },
+    {
+     "id": "lu-shore",
+     "domain": "Pleasure & Tranquility",
+     "name": "The view from the shore",
+     "kanji": "suave mari magno",
+     "description": "Lucretius's famous image: it is sweet, from dry land, to watch a ship struggle in a storm at sea — not because you relish others' danger, but because you see clearly what troubles you are free of.",
+     "example": "Standing on the shore of understanding, the Epicurean watches the shipwreck of ambition, greed, and superstition below — grateful not for others' pain but for hard-won peace.",
+     "q": "What does Lucretius's image of watching a storm 'from the shore' represent?",
+     "a": "The calm of the wise: not pleasure in others' suffering, but relief and clarity at seeing what troubles one is spared."
     }
    ]
   }
