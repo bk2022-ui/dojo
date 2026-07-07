@@ -39,6 +39,13 @@
   .co-dd-soon{padding:7px 12px;border-radius:8px;color:var(--muted);text-decoration:none;font-size:14px;cursor:pointer;display:flex;justify-content:space-between}
   .co-dd-soon:hover{background:var(--paper2)}
   .co-dd-soon em{font-style:normal;font-size:10px;color:var(--floor);border:1px solid var(--stroke);border-radius:20px;padding:1px 7px}
+  .co-dojo{max-width:60ch;margin:66px auto 0;text-align:center;padding-top:42px;border-top:1px solid var(--stroke)}
+  .co-dj-h{font-family:var(--hand);font-size:46px;color:var(--ink);margin:0 0 16px;line-height:1}
+  .co-dj-copy{font-family:var(--serif);font-size:19px;line-height:1.6;color:var(--sub);max-width:44ch;margin:0 auto 26px}
+  .co-dj-copy strong{color:var(--ink);font-weight:600}
+  .co-dj-btn{display:inline-block;background:var(--coral);color:#fff;font-size:16px;border-radius:11px;padding:12px 26px;text-decoration:none}
+  .co-dj-btn:hover{background:#b0562f;color:#fff}
+  .co-dj-chips{display:flex;gap:7px;justify-content:center;flex-wrap:wrap;margin-top:28px}
   @media(max-width:640px){.co-nav{flex-wrap:wrap;justify-content:center;gap:5px 16px} .co-brand span{display:none} .co-navlinks{gap:14px;font-size:13px} .co-bkback{font-size:12.5px;padding-right:10px} .co-navleft{gap:10px}}
   .co-eyebrow{font-size:12.5px;letter-spacing:2.5px;text-transform:uppercase;color:var(--muted);margin:0 0 14px}
   h1{font-family:var(--hand);font-size:56px;line-height:1.02;margin:0 0 14px;letter-spacing:.5px;text-wrap:balance}
@@ -108,6 +115,7 @@
       </div>
     </details>
     <a href="#how">How it works</a>
+    <a href="#dojo">Dōjō</a>
     <a href="#about">About</a>
   </div>
 </nav>
@@ -808,6 +816,16 @@
   <div class="co-source"><b>The research.</b> Mullainathan &amp; Shafir (2013) &#x27;Scarcity: Why Having Too Little Means So Much&#x27; — sugarcane farmers, poor before harvest vs. flush after (~13 IQ points). <a class="co-src-link" href="https://www.science.org/doi/10.1126/science.1238041" target="_blank" rel="noopener">Read the source →</a></div>
 </section></div>
 
+  <section id="dojo" class="co-dojo">
+    <p class="co-eyebrow">a place to practice</p>
+    <p class="co-dj-h">Dōjō</p>
+    <p class="co-dj-copy"><strong>Dōjō — a place to practice.</strong> Flashcards and spaced repetition for the interesting ideas school skipped. Pick a topic, study a few cards, and they stick.</p>
+    <a class="co-dj-btn" href="/dojo/">Enter Dōjō →</a>
+    <div class="co-dj-chips">
+      <span class="co-tag">Japan Mind</span><span class="co-tag">Lost in Translation</span><span class="co-tag">First Principles</span><span class="co-tag">City Makers</span><span class="co-tag">Design Eye</span>
+    </div>
+  </section>
+
   <section id="about" class="co-shared">
     <h2>Why this exists</h2>
     <p>Complex ideas are hard to hold onto. A dense paper, a subtle finding, a tangled concept — most of it fades soon after you read it. Napkin Solo exists to change that: to take difficult ideas and make them easy to grasp and hard to forget. What reaches you is disarmingly simple — a single picture that makes an idea click and stays with you. Behind that simplicity is an AI-assisted engine we have spent a long time building and refining.</p>
@@ -831,7 +849,7 @@
 
 <footer class="co-foot">
   <span>Napkin Solo — complex ideas, made simple and memorable.</span>
-  <span><a href="#about">About</a> &middot; <a href="#name">On the name</a> &middot; <a href="#how">How it works</a> &middot; napkinsolo.ai</span>
+  <span><a href="#dojo">Dōjō</a> &middot; <a href="#about">About</a> &middot; <a href="#name">On the name</a> &middot; <a href="#how">How it works</a> &middot; napkinsolo.ai</span>
 </footer>
 
 <div id="co-uc" class="co-uc"></div>
@@ -851,16 +869,17 @@ function uc(label){
   clearTimeout(ucT); ucT = setTimeout(function(){ t.classList.remove('show'); }, 2600);
   var dd = document.querySelector('.co-dd'); if (dd) dd.open = false;
 }
-// Concepts dropdown: a native <details> only closes on a second click of its own
-// summary. Dismiss it too when the visitor clicks anywhere outside it, or presses Escape.
+// Nav dropdowns (Concepts, Dōjō): a native <details> only closes on a second click of
+// its own summary. Dismiss any open one when the visitor clicks outside it or presses
+// Escape — and close the others when one opens, so only one menu is ever open.
 (function(){
-  var dd = document.querySelector('.co-dd');
-  if (!dd) return;
+  var dds = document.querySelectorAll('.co-dd');
+  if (!dds.length) return;
   document.addEventListener('click', function(e){
-    if (dd.open && !dd.contains(e.target)) dd.open = false;
+    dds.forEach(function(dd){ if (dd.open && !dd.contains(e.target)) dd.open = false; });
   });
   document.addEventListener('keydown', function(e){
-    if (e.key === 'Escape' && dd.open) dd.open = false;
+    if (e.key === 'Escape') dds.forEach(function(dd){ dd.open = false; });
   });
 })();
 // Portfolio ribbon: show "← Bharat Khandelwal" only when the visitor arrived from
