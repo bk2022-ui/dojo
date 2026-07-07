@@ -851,6 +851,18 @@ function uc(label){
   clearTimeout(ucT); ucT = setTimeout(function(){ t.classList.remove('show'); }, 2600);
   var dd = document.querySelector('.co-dd'); if (dd) dd.open = false;
 }
+// Concepts dropdown: a native <details> only closes on a second click of its own
+// summary. Dismiss it too when the visitor clicks anywhere outside it, or presses Escape.
+(function(){
+  var dd = document.querySelector('.co-dd');
+  if (!dd) return;
+  document.addEventListener('click', function(e){
+    if (dd.open && !dd.contains(e.target)) dd.open = false;
+  });
+  document.addEventListener('keydown', function(e){
+    if (e.key === 'Escape' && dd.open) dd.open = false;
+  });
+})();
 // Portfolio ribbon: show "← Bharat Khandelwal" only when the visitor arrived from
 // bharatkhandelwal.com (referrer or ?from=bk), and remember it for the session.
 (function(){
