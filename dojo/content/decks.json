@@ -1,12 +1,12 @@
 {
- "contentVersion": 4,
+ "contentVersion": 5,
  "updated": "2026-07-07",
  "minEngineVersion": 1,
  "decks": [
   {
    "id": "japan",
    "name": "Japan Mind",
-   "tagline": "Craft, aesthetics & philosophy from Japan",
+   "tagline": "Craft, aesthetics & wisdom from Japan",
    "emoji": "🇯🇵",
    "lang": "ja-JP",
    "color": "#c2562f",
