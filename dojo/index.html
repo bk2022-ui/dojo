@@ -83,6 +83,9 @@
   .back-rev{text-align:left}
   .lbl{font-size:11px;text-transform:uppercase;letter-spacing:.7px;color:var(--accent);font-weight:600;margin:16px 0 3px}
   .back-rev p{margin:0;font-size:16px}
+  .srcquote{margin:0;font-size:16px;font-style:italic;line-height:1.5;border-left:3px solid var(--accent);padding:1px 0 1px 13px}
+  .srccredit{font-size:12px;color:var(--muted);margin-top:7px}
+  .srccredit a{color:var(--muted);text-decoration:underline}
   .hint{color:var(--muted);font-size:14px;text-align:center;margin-top:18px}
   .ratebar{position:sticky;bottom:0;z-index:5;display:grid;grid-template-columns:repeat(3,1fr);gap:8px;
     background:var(--paper);border-top:1px solid var(--line);
@@ -463,6 +466,7 @@ function study(){
       </div>
       <div id="rev" class="back-rev" style="display:none">
         <div class="lbl">What it means</div><p>${esc(c.description)}</p>
+        ${c.source&&c.source.quote?`<div class="lbl">In their words</div><blockquote class="srcquote">${esc(c.source.quote)}</blockquote><div class="srccredit">${c.source.url?`<a href="${esc(c.source.url)}" target="_blank" rel="noopener">`:""}${esc(c.source.credit||"")}${c.source.ref?" · "+esc(c.source.ref):""}${c.source.url?`</a>`:""}</div>`:""}
         <div class="lbl">In practice</div><p>${esc(c.example)}</p>
         <div class="lbl">Test yourself</div><p>${esc(c.q)}</p>
       </div>

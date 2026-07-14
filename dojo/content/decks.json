@@ -1,5 +1,5 @@
 {
- "contentVersion": 7,
+ "contentVersion": 8,
  "updated": "2026-07-14",
  "minEngineVersion": 1,
  "decks": [
@@ -426,7 +426,13 @@
      "description": "Doing something with full care and thoroughness, giving the task in front of you exactly what it deserves. No rushing, no half-attention, no treating the ordinary thing as an obstacle between you and the important things.",
      "example": "Folding a letter teinei means every crease is deliberate; making tea teinei means the water temperature, the pour, and the placement of the cup all matter; sending an email teinei means you actually meant every word in it.",
      "q": "What does 'teinei' describe?",
-     "a": "Giving a task your full care and thoroughness, treating each step as deliberate rather than an obstacle to rush past."
+     "a": "Giving a task your full care and thoroughness, treating each step as deliberate rather than an obstacle to rush past.",
+     "source": {
+      "quote": "The ordinary things are not in the way of the meaningful things. They are the meaningful things — or they can be, if you treat them that way.",
+      "credit": "Josh · Shizen Style",
+      "ref": "Shizen Style Weekly · Jul 14, 2026",
+      "url": "https://joshuas-newsletter-682e12.beehiiv.com/p/shizen-style-weekly-e5b24c689fcbc9e7"
+     }
     },
     {
      "id": "keizoku-wa-chikara-nari",
