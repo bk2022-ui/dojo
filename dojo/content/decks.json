@@ -1,6 +1,6 @@
 {
- "contentVersion": 6,
- "updated": "2026-07-07",
+ "contentVersion": 7,
+ "updated": "2026-07-14",
  "minEngineVersion": 1,
  "decks": [
   {
@@ -423,10 +423,10 @@
      "domain": "Craft",
      "name": "Teinei",
      "kanji": "丁寧",
-     "description": "Careful, thorough, and attentive doing, with respect in the work. It means treating each step deliberately rather than rushing.",
-     "example": "Writing a clear, well-structured handoff document instead of a hasty note is working in a teinei way, and it earns trust from colleagues.",
+     "description": "Doing something with full care and thoroughness, giving the task in front of you exactly what it deserves. No rushing, no half-attention, no treating the ordinary thing as an obstacle between you and the important things.",
+     "example": "Folding a letter teinei means every crease is deliberate; making tea teinei means the water temperature, the pour, and the placement of the cup all matter; sending an email teinei means you actually meant every word in it.",
      "q": "What does 'teinei' describe?",
-     "a": "Doing something carefully, thoroughly, and attentively, with respect for the task."
+     "a": "Giving a task your full care and thoroughness, treating each step as deliberate rather than an obstacle to rush past."
     },
     {
      "id": "keizoku-wa-chikara-nari",
